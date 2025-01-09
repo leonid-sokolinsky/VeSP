@@ -5,12 +5,13 @@ Module: _Problems-Miscellaneous.h (Miscellaneous LP problems)
 Prefix: PP
 Author: Leonid B. Sokolinsky
 This include file is part of Problem-Parameters.h
-==============================================================================*/
+================================================================================*/
 #pragma once
 
-//=========================== problem Parameters ========================
+//=========================== problem Parameters ===============================
 #define PP_EPS_ZERO					1E-9		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
+
+#define PP_EPS_PROJECTION_ZERO		PP_EPS_ZERO	// Precision to calculate projection
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7		// Length of Objective Vector
 
 /*============================== nguyen5 LP problem ============================*
@@ -34,7 +35,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 		60000
 //-------------------------------------------------------------------------------
 
-/*============================== cubeInHyperplane LP problem ===================*
+/*============================== cubeInHyperplane LP problem ===================*/
 #define PP_MPS_FORMAT
 #define PP_PROBLEM_NAME	"cubeInHyperplane"
 #define PP_M 4		// Number of rows in *.mtx
@@ -149,7 +150,7 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 		671.9524948597968
 //------------------------------------------------------------------------------
 
-/*============================== rnd3_3_Olkhovsky56 LP problem =================*/
+/*============================== rnd3_3_Olkhovsky56 LP problem =================*
 #define PP_PROBLEM_NAME	"rnd3_3_Olkhovsky56"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 9		// Number of variables (number of cols in *.mtx)

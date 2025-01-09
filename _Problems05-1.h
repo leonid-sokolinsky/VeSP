@@ -12,13 +12,13 @@ LP problems were obtained using BSF-LPP-Generator.
 //=========================== Problem Parameters ========================
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
-#define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7		// Length of Objective Vector
+#define PP_EPS_ZERO					1E-11				// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*100)	// Accuracy of belonging to hyperplane
+#define PP_EPS_PROJECTION_ZERO		PP_EPS_ON_HYPERPLANE// Precision to calculate projection
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-----------------------------------------------------------------------
 
-/*============================== rnd5-0 LP problem ==============================*
+/*============================== rnd5-0 LP problem ==============================*/
 // Exact solution:	100   200   200   200   200
 #define PP_PROBLEM_NAME	"rnd5-0"
 #define PP_MAX_OBJ_VALUE 2900
@@ -49,7 +49,7 @@ LP problems were obtained using BSF-LPP-Generator.
 #define PP_MAX_OBJ_VALUE 2626.473236211187
 //-------------------------------------------------------------------------------
 
-/*============================== rnd5-1-6 LP problem ============================*/
+/*============================== rnd5-1-6 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-6"
 #define PP_MAX_OBJ_VALUE 2675.351994188833
 //-------------------------------------------------------------------------------

@@ -35,6 +35,8 @@ This source code has been produced with using BSF-skeleton
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
 #define PP_SAVE_RESULT
+#define PP_SAVE_ITER_RESULT
+//#define PP_BIPROJECTION
 
 //=========================== Problem Parameters =========================
 #ifdef PP_MPS_FORMAT
@@ -66,7 +68,6 @@ This source code has been produced with using BSF-skeleton
 //-------------------------- Jobs  -----------------------
 // Not used.
 //------------- Locations -------------
-#define PP_DEGENERATE_INEQUALITY	0
 #define PP_ON_HYPERPLANE			1
 #define PP_INSIDE_HALFSPACE			2
 #define PP_OUTSIDE_HALFSPACE		3
