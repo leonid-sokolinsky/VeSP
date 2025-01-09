@@ -1,9 +1,9 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: VeSP (Vertex Search by Projecting) method (MPI)
+Theme: AlEM - Along Edges Movement method (MPI)
 Module: Problem-Types.h (BSF Types)
 Prefix: PT
-Author: Leonid B. Sokolinsky
+Authors: Alexander E. Zhulev & Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/			
 #pragma once
