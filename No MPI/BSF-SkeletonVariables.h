@@ -1,9 +1,9 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: AlEM - Along Edges Movement method (No MPI)
+Theme: VeSP (Vertex Search by Projecting) method (No MPI)
 Module: BSF-SceletonVariables.h (Skeleton Variables)
-Prefix: Bsv
-Authors: Alexander E. Zhulev & Leonid B. Sokolinsky
+Prefix: BSF_sv
+Author: Leonid B. Sokolinsky
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)
 ==============================================================================*/
 static int BSF_sv_addressOffset;			// Contains the number of the first element of the map-sublist scheduled to the current worker process.

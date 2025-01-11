@@ -1,9 +1,9 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: AlEM - Along Edges Movement method (No MPI)
+Theme: VeSP (Vertex Search by Projecting) method (No MPI)
 Module: BSF-Code.cpp (Problem Independent Code)
 Prefix: BC
-Authors: Alexander E. Zhulev & Leonid B. Sokolinsky
+Author: Leonid B. Sokolinsky
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)
 ==============================================================================*/
 #include "BSF-Data.h"				// Problem Independent Variables & Data Structures 
@@ -12,7 +12,7 @@ This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky
 using namespace std;
 //======================================== Problem-independent codes (don't modify them) ====================================
 int main(int argc, char* argv[]) {
-	PC_bsf_MainArguments(argc, argv);
+	PC_bsf_MainArguments(argc, argv);	
 	PC_bsfAssignMpiRank(0);
 	PC_bsfAssignMpiMaster(0);
 	PC_bsfAssignNumOfWorkers(1);
@@ -52,6 +52,7 @@ static void BC_Master() {// The head function of the master process.
 	BD_t = -(double)time(NULL);
 
 	do {
+		PC_bsf_IterInit(BD_order.parameter);
 		PC_bsf_JobDispatcher(&(BD_order.parameter), &BD_newJobCase, &BD_exit, BD_t + (double)time(NULL));
 		if (BD_exit) break;
 		BD_jobCase = BD_newJobCase;
@@ -65,33 +66,33 @@ static void BC_Master() {// The head function of the master process.
 		BC_WorkerMap();
 		BC_WorkerReduce();
 		switch (BD_jobCase) {
-		case 0:
+			case 0:
 			PC_bsf_ProcessResults(
-				&BD_extendedReduceResult_P->elem,
+				&BD_extendedReduceResult_P->elem, 
 				BD_extendedReduceResult_P->reduceCounter,
-				&(BD_order.parameter),
+				&(BD_order.parameter), 
 				&BD_newJobCase, &BD_exit);
 #ifdef PP_BSF_ITER_OUTPUT
 			if (BD_iterCounter % PP_BSF_TRACE_COUNT == 0)
 				PC_bsf_IterOutput(
-					&BD_extendedReduceResult_P->elem,
-					BD_extendedReduceResult_P->reduceCounter,
+					&BD_extendedReduceResult_P->elem, 
+					BD_extendedReduceResult_P->reduceCounter, 
 					BD_order.parameter,
 					BD_t + (double)time(NULL),
 					BD_newJobCase);
 #endif // PP_BSF_ITER_OUTPUT
 			break;
 		case 1:
-			PC_bsf_ProcessResults_1(
-				&BD_extendedReduceResult_P_1->elem,
+			PC_bsf_ProcessResults_1( 
+				&BD_extendedReduceResult_P_1->elem, 
 				BD_extendedReduceResult_P_1->reduceCounter,
-				&(BD_order.parameter),
+				&(BD_order.parameter), 
 				&BD_newJobCase, &BD_exit);
 #ifdef PP_BSF_ITER_OUTPUT
 			if (BD_iterCounter % PP_BSF_TRACE_COUNT == 0)
 				PC_bsf_IterOutput_1(
-					&BD_extendedReduceResult_P_1->elem,
-					BD_extendedReduceResult_P_1->reduceCounter,
+					&BD_extendedReduceResult_P_1->elem, 
+					BD_extendedReduceResult_P_1->reduceCounter, 
 					BD_order.parameter,
 					BD_t + (double)time(NULL),
 					BD_newJobCase);
@@ -249,7 +250,7 @@ static bool BC_WorkerMap() { // Performs the Map function
 	PC_bsfAssignSublistLength(BD_listSize);
 	PC_bsfAssignAddressOffset(0);
 	PC_bsfAssignParameter(BD_order.parameter);
-	PC_bsf_IterInit(BD_order.parameter);
+	//PC_bsf_IterInit(BD_order.parameter);
 #ifdef PP_BSF_OMP
 #ifdef PP_BSF_NUM_THREADS
 #pragma omp parallel for num_threads(PP_BSF_NUM_THREADS)

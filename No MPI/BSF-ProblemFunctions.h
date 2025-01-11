@@ -1,8 +1,8 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: AlEM - Along Edges Movement method (No MPI)
+Theme: VeSP (Vertex Search by Projecting) method (No MPI)
 Module: BSF-ProblemFunctions.h (Predefined Problem Function Forwards)
-Authors: Alexander E. Zhulev & Leonid B. Sokolinsky
+Author: Leonid B. Sokolinsky
 This source code is a part of BSF Skeleton (https://github.com/leonid-sokolinsky/BSF-skeleton)
 ==============================================================================*/
 #include "Problem-bsfTypes.h"	// Predefined Problem Types

@@ -1,8 +1,8 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: AlEM - Along Edges Movement method (No MPI)
+Theme: VeSP (Vertex Search by Projecting) method (No MPI)
 Module: BSF-Include.h (Problem Independent "Include" Files)
-Authors: Alexander E. Zhulev & Leonid B. Sokolinsky 
+Author: Leonid B. Sokolinsky 
 
 This source code is a part of BSF Skeleton
 ==============================================================================*/

@@ -1,17 +1,16 @@
 /*==============================================================================
 Project: LiFe - New Linear Programming Solvers
-Theme: AlEM - Along Edges Movement method (MPI)
+Theme: VeSP (Vertex Search by Projecting) method (MPI)
 Module: Problem-Forwards.h (Problem Function Forwards)
-Authors: Alexander E. Zhulev & Leonid B. Sokolinsky
+Author: Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 #include "Problem-bsfTypes.h"
 #include "Problem-Types.h"
 //====================== Private Functions ===========================
 namespace PF {
-	void	CalculateNumberOfEdges(int neq, int mneh_u, int* med_u);
-	void	MakeEdgeList(int* edgeCodeList, int med_u);
-	void	PreparationForIteration(PT_vector_T u);
+	void	MakeProjectionHyperplaneList(int* projectionHyperplanesList, int* alHyperplanes_p, int flatDim);
+	void	PreparationForIterations(PT_vector_T u, int* flatDim);
 }
 //====================== Shared Functions ===========================
 namespace SF {
@@ -23,11 +22,10 @@ namespace SF {
 	double	DistanceSQR_PointToPoint(PT_vector_T x, PT_vector_T y);
 	void	Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_bipprojection_round, double eps_zero, int maxProjectingIter, PT_vector_T w, int* success);
 	void	Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_maxprojection_zero, double eps_zero, int maxProjectingIter, PT_vector_T w, int* success);
-	void	JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double eps);
+	void	JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double eps_zero);
 	void	MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a);
 	void	MakeListOfNotIncludingHalfspaces(PT_vector_T x, int* notIncludingHalfspacesList, double eps);
 	void	MakeNeHyperplaneList(PT_vector_T u, int* neHyperplanes_u, int* mneh_u, double eps);
-	void	MovingToPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double epsMoving, double epsInHalfspace);
 	bool	MPS___Load_Problem();
 	bool	MPS__MakeProblem(PT_MPS_row_T* row, int n_row, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBounds, int n_up, PT_MPS_fxVariable_T* fxVariable, int n_fx);
 	bool	MPS__ReadBounds(FILE* stream, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBound, int* n_up, PT_MPS_fxVariable_T* fxVariable, int* n_fx);
@@ -81,7 +79,7 @@ namespace SF {
 	void	Print_HalfspacesIncludingPoint(PT_vector_T x, double eps);
 	void	Print_HalfspacesOutOfPoint(PT_vector_T x, double eps);
 	void	Print_HyperplanesIncludingPoint(PT_vector_T x, double eps);
-	void	Print_Number_of_edges(PT_vector_T x, double epsOnHyperplane);
+	void	Print_Number_of_edges(PT_vector_T x, double eps_on_hyperplane);
 	void	Print_Vector(PT_vector_T x);
 	double	RelativeError(double trueValue, double calculatedValue);
 	void	Shift(PT_vector_T point, PT_vector_T shiftVector, double factor, PT_vector_T shiftedPoint);
