@@ -16,4 +16,4 @@ This source code has been produced with using BSF-skeleton
 
 //--------------------------- OpenMP Parameters ---------------------------
 //#define PP_BSF_OMP				// If PP_BSF_OMP is defined then OpenMP is turned on for Map Step
-#define PP_BSF_NUM_THREADS 10		// If PP_BSF_NUM_THREADS is udefined then all accessable threads are used
+//#define PP_BSF_NUM_THREADS 10	// If PP_BSF_NUM_THREADS is udefined then all accessable threads are used

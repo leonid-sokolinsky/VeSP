@@ -27,20 +27,18 @@ This source code has been produced with using BSF-skeleton
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
 #define PP_SAVE_RESULT
-//#define PP_SAVE_ITER_RESULT
+#define PP_SAVE_ITER_RESULT
 //#define PP_BIPROJECTION
 
 //=========================== Problem Parameters =========================
-#ifdef PP_MPS_FORMAT
-#define PP_MM							(PP_M+3*PP_N)		// Maximal number of constraints
-#else
-#define PP_MM							(PP_M+2*PP_N)		// Maximal number of constraints
-#endif // PP_MPS_FORMAT
+#define PP_MM					(PP_M+2*PP_N)	// Maximal number of constraints
+
 #define PP_MAX_ITER_COUNT		10000000000		// Maximal count of iterations
-#define PP_DBL_MAX				1E+308			// Highest value
+//------------------------------ ifdef PP_DEBUG --------------------------------
+#define PP_PROJECTION_COUNT			100000			// Each PP_PROJECTION_COUNT-th iteration to be outputted inside Flat_MaxProjection(*)
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	4 // Number of Elements to output
-#define PP_SETW 14
+#define PP_SETW 24
 //------------------------- Matrix format ----------------
 #define PP_INFINITY			1E+308		// Highest bound in *_hi.mtx
 #define PP_MTX_PREFIX		"lp_"

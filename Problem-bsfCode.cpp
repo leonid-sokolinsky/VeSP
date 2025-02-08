@@ -44,7 +44,7 @@ void PC_bsf_Init(bool* success) {
 	for (int i = 0; i < PD_m; i++)
 		if (PD_norm_a[i] < PP_EPS_ZERO) { //Degenerate equation!
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Equation/inequality " << i << " is degenerate with pecision of PP_EPS_ZERO = "
+				cout << "PC_bsf_Init error: Equation/inequality " << i << " is degenerate with pecision of PP_EPS_ZERO = "
 				<< PP_EPS_ZERO << "!!!\n";
 			*success = false;
 			return;
@@ -65,17 +65,22 @@ void PC_bsf_Init(bool* success) {
 	if (*success == false)
 		return;
 
-	if (!PointBelongsPolytope(PD_u, PP_EPS_ON_HYPERPLANE)) {
-		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-			cout << "Starting point does not belong to the feasible polytope with precision PP_EPS_ON_HYPERPLANE = "
-			<< PP_EPS_ON_HYPERPLANE << "!!!\n";
+	if (!PointBelongsToPolytope(PD_u, PP_EPS_ON_HYPERPLANE)) {
+		if (BSF_sv_mpiRank == BSF_sv_mpiMaster) {
+			cout << "PC_bsf_Init error: Point u0 does NOT belong to polytope with precision of PP_EPS_ON_HYPERPLANE = " << PP_EPS_ON_HYPERPLANE << endl;
+			double eps_on_polytope = PP_EPS_ON_HYPERPLANE;
+			Tuning_Eps_PointBelongsToPolytope(PD_u, &eps_on_polytope);
+			cout << "Point u0 will belong to polytope with precision of " << eps_on_polytope << endl;
+		}
 		*success = false;
 		return;
 	}
 
-	if (PointIsVertex_i(PD_u, PP_EPS_ON_HYPERPLANE)) {
+	if (PointIsVertex(PD_u, PP_EPS_ON_HYPERPLANE)) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster) {
-			cout << "Starting point is vertex.";
+			cout << "// Starting point is vertex\n// Number of including inequality hyperplanes: "
+				<< Number_IncludingNeHyperplanes(PD_u, PP_EPS_ON_HYPERPLANE)
+				<< "\n// Objective function: " << ObjF(PD_u) << endl;
 #ifdef PP_SAVE_RESULT
 			MTX_SavePoint(PD_u, PP_MTX_POSTFIX_V);
 			cout << " It is saved in file *_v.mtx\n";
@@ -229,11 +234,11 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "Map List is not Fragmented" << endl;
 #endif
 
-#ifdef BIPROJECTION
+#ifdef PP_BIPROJECTION
 	cout << "Pseudoprojection method: BIP" << endl;
 #else
 	cout << "Pseudoprojection method: Max" << endl;
-#endif // BIPROJECTION
+#endif // PP_BIPROJECTION
 
 	cout << "PP_EPS_ZERO\t\t\t" << PP_EPS_ZERO << endl;
 	cout << "PP_EPS_ON_HYPERPLANE\t\t" << PP_EPS_ON_HYPERPLANE << endl;
@@ -248,6 +253,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 #endif // PP_MATRIX_OUTPUT
 
 #ifdef PP_DEBUG
+	cout << "F(x) = " << setw(PP_SETW) << ObjF(PD_u) << endl;
 	cout << "_______________________________ " << PD_iterNo << " ___________________________________\n";
 	cout << "u on hyperplanes: "; Print_HyperplanesIncludingPoint(PD_u, PP_EPS_ON_HYPERPLANE); cout << endl;
 #endif // PP_DEBUG
@@ -258,17 +264,20 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 
 	cout << "================================================" << endl;
 	cout << "// Elapsed time: " << t << endl;
-	cout << "// Number of iterations: " << PD_iterNo << endl;
-	cout << "// Objective function: " << ObjF(PD_u) << endl;
+	cout << "// Number of iterations: " << PD_iterNo + 1 << endl;
+	cout << "// Objective function: " << setprecision(16) << ObjF(PD_u) << endl;
 	cout << "================================================" << endl;
-	cout << "Vertex v:\t";
-	Print_Vector(PD_u); cout << endl;
-	cout << "v on hyperplanes: "; Print_HyperplanesIncludingPoint(PD_u, PP_EPS_ON_HYPERPLANE);
 
 #ifdef PP_SAVE_RESULT
 	if (MTX_SavePoint(PD_u, PP_MTX_POSTFIX_V))
-		cout << "\nBoundary point is saved into the file *.v" << endl;
+		cout << "\nVertgex is saved into the file *.v" << endl;
 #endif // PP_SAVE_RESULT
+
+#ifdef PP_DEBUG
+	// cout << "Vertex v:\t"; Print_Vector(PD_u); cout << endl;
+	cout << "Distance to polytope: " << Distance_PointToPolytope(PD_u) << endl;
+#endif // PP_DEBUG
+
 }
 
 void PC_bsf_ProblemOutput_1(PT_bsf_reduceElem_T_1* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
@@ -286,7 +295,6 @@ void PC_bsf_ProblemOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCount
 void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T* parameter, int* nextJob, bool* toExit) {
 	PT_vector_T w; // Result of projection
 	PT_vector_T u_nex;
-	PT_vector_T d_jump; // Direction for jumping
 
 #ifdef PP_MAX_ITER_COUNT
 	if (BSF_sv_iterCounter > PP_MAX_ITER_COUNT) {
@@ -319,26 +327,50 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 #endif
 
 	Vector_Copy(parameter->v, w);
-	Vector_Subtraction(w, PD_u, d_jump);
-	assert(Vector_Norm(d_jump) >= PP_EPS_ZERO);
-	JumpingOnPolytope(PD_u, d_jump, u_nex, PP_EPS_ZERO);
-	Vector_Copy(u_nex, PD_u);
-
 
 	/*DEBUG PC_bsf_ProcessResults*/
 #ifdef PP_DEBUG
+	cout << "w on hyperplanes: "; Print_HyperplanesIncludingPoint(w, PP_EPS_ON_HYPERPLANE); cout << endl;
+	if (!PointBelongsToFlat(w, PD_alHyperplanes_p, PD_mne_p, PP_EPS_ON_HYPERPLANE)) {
+		cout << "PC_bsf_ProcessResults warning: Point w does NOT belong to flat with precision of PP_EPS_ON_HYPERPLANE = " << PP_EPS_ON_HYPERPLANE << endl;
+		double eps_on_hyperplane = PP_EPS_ON_HYPERPLANE;
+		Tuning_Eps_PointBelongsToFlat(w, PD_alHyperplanes_p, PD_mne_p, &eps_on_hyperplane);
+		cout << "Point w will belong to flat with precision of " << eps_on_hyperplane << endl;
+	}
+#endif // PP_DEBUG /**/
+
+	JumpingOnPolytope(PD_u, w, u_nex, PP_EPS_ON_HYPERPLANE);
+	Vector_Copy(u_nex, PD_u);
+
+#ifdef PP_DEBUG
+	PT_vector_T d; // Direction vector
+	Vector_Subtraction(u_nex, PD_u, d);
+	assert(Vector_Norm(d) >= PP_EPS_ZERO);
+#endif // PP_DEBUG
+
+	if (!PointBelongsToPolytope(u_nex, PP_EPS_ON_HYPERPLANE)) {
+		cout << "PC_bsf_ProcessResults error: Point u_nex does NOT belong to polytope with precision of PP_EPS_ON_HYPERPLANE = " << PP_EPS_ON_HYPERPLANE << endl;
+		double eps_on_polytope = PP_EPS_ON_HYPERPLANE;
+		Tuning_Eps_PointBelongsToPolytope(u_nex, &eps_on_polytope);
+		cout << "Point u_nex will belong to polytope with precision of " << eps_on_polytope << endl;
+		*toExit = true;
+		return;
+	}
+
+	/*DEBUG PC_bsf_ProcessResults*/
+	#ifdef PP_DEBUG
 	cout << "_______________________________ " << PD_iterNo + 1 << " ___________________________________\n";
 	cout << "ObjF(u) = " << ObjF(PD_u) << endl;
 	cout << "u on hyperplanes: "; Print_HyperplanesIncludingPoint(PD_u, PP_EPS_ON_HYPERPLANE); cout << endl;
 	//cout << "u = "; Print_Vector(PD_u); cout << endl;
-#endif // PP_DEBUG /**/
+	#endif // PP_DEBUG /**/
 
 	PD_mneh_u = Number_IncludingNeHyperplanes(PD_u, PP_EPS_ON_HYPERPLANE);
 	PD_flatDim = PD_n - PD_meq - PD_mneh_u;
 	if (PD_flatDim < 1) {
 		/*DEBUG PC_bsf_ProcessResults*/
 #ifdef PP_DEBUG
-		cout << "Flat dimension = " << PD_flatDim << endl;
+		cout << "Flat dimension = " << PF_MAX(PD_flatDim, 0) << endl;
 #endif // PP_DEBUG /**/
 		* toExit = true;
 		return;
@@ -472,27 +504,27 @@ namespace SF {
 		return Vector_NormSquare(z);
 	}
 
-	static inline void Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_bipprojection_round, double eps_zero, int maxProjectingIter, PT_vector_T w, int* success) {
+	static inline void Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success) {
+		PT_vector_T p;
 		PT_vector_T r;
-		PT_vector_T w_previous;
-		double dist;
 		int iterCount = 0;
+		double dist;
+		double dist_prev = PP_INFINITY;
+		double delta_dist;
+
 
 		Vector_Copy(v, w);
 		*success = true;
 
 		do {
 			Vector_Zeroing(r);
-			Vector_Copy(w, w_previous);
 
 			for (int i = 0; i < m_flat; i++) {
-				PT_vector_T p;
 				OrthogonalProjectingVectorOntoHyperplane_i(w, flatHyperplanes[i], p);
 				Vector_PlusEquals(r, p);
 			}
-
 			Vector_DivideEquals(r, m_flat);
-			Vector_Round(r, eps_bipprojection_round);
+
 			Vector_PlusEquals(w, r);
 
 			iterCount++;
@@ -500,19 +532,30 @@ namespace SF {
 				*success = false;
 				break;
 			}
-			dist = Distance_PointToPoint(w, w_previous);
-		} while (dist >= eps_zero);
-		/*DEBUG PC_bsf_MapF**
+
+			dist = Vector_Norm(r);
+			delta_dist = fabs(dist - dist_prev);
+			dist_prev = dist;
+
+			/*DEBUG Flat_BipProjection*/
 #ifdef PP_DEBUG
-		cout << "Flat_BipProjection: iterCount = " << iterCount << endl;
+			if (iterCount % PP_PROJECTION_COUNT == 0)
+				cout << "Worker " << BSF_sv_mpiRank << ": \tsublist_index = " << BSF_sv_numberInSublist << ": \tdelta_dist = " << delta_dist << endl;
 #endif // PP_DEBUG /**/
+
+		} while (delta_dist >= eps_projection);
+		/*DEBUG PC_bsf_MapF**
+		#ifdef PP_DEBUG
+		//cout << "Flat_BipProjection: iterCount = " << iterCount << endl;
+		#endif // PP_DEBUG /**/
 	}
 
-	static inline void Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_maxprojection_zero, double eps_zero, int maxProjectingIter, PT_vector_T w, int* success) {
-		PT_vector_T w_previous;
+	static inline void Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success) {
+		PT_vector_T p;
 		PT_vector_T w_max;
-		double dist;
 		double max_dist;
+		double max_dist_prev = PP_INFINITY;
+		double delta_dist;
 		int max_i;
 		int iterCount = 0;
 
@@ -520,15 +563,12 @@ namespace SF {
 		*success = true;
 
 		do {
-			Vector_Copy(w, w_previous);
-
 			max_dist = 0;
 			max_i = -1;
 			for (int i = 0; i < m_flat; i++) {
-				PT_vector_T p;
 				OrthogonalProjectingVectorOntoHyperplane_i(w, flatHyperplanes[i], p);
-				dist = Vector_Norm(p);
-				if (dist >= max_dist + eps_maxprojection_zero) {
+				double dist = Vector_Norm(p);
+				if (dist > max_dist) {
 					Vector_Addition(w, p, w_max);
 					max_dist = dist;
 					max_i = i;
@@ -537,49 +577,79 @@ namespace SF {
 
 			if (max_i < 0) {
 				/*DEBUG Flat_MaxProjection**
-#ifdef PP_DEBUG
+				#ifdef PP_DEBUG
 				cout << "Flat_MaxProjection: iterCount = " << iterCount << endl;
-#endif // PP_DEBUG /**/
+				#endif // PP_DEBUG /**/
 				return;
 			}
 
 			Vector_Copy(w_max, w);
+
 			iterCount++;
 			if (iterCount > maxProjectingIter) {
 				*success = false;
 				break;
 			}
-			dist = Distance_PointToPoint(w, w_previous);
-		} while (dist >= eps_zero);
-		/*DEBUG PC_bsf_MapF**
+
+			delta_dist = fabs(max_dist - max_dist_prev);
+			max_dist_prev = max_dist;
+
+			/*DEBUG Flat_MaxProjection*/
 #ifdef PP_DEBUG
-		cout << "Flat_MaxProjection: iterCount = " << iterCount << endl;
+			if (iterCount % PP_PROJECTION_COUNT == 0)
+				cout << "Worker " << BSF_sv_mpiRank << ": \tsublist_index = " << BSF_sv_numberInSublist << ": \tdelta_dist = " << delta_dist << endl;
 #endif // PP_DEBUG /**/
+
+		} while (delta_dist >= eps_projection);
+
+		/*DEBUG Flat_MaxProjection**
+		#ifdef PP_DEBUG
+		cout << "Flat_MaxProjection: iterCount = " << iterCount << endl;
+		#endif // PP_DEBUG /**/
 	}
 
-	static inline void JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double eps_zero) {
-		PT_vector_T o; // Oblique projection vector
-		PT_vector_T o_min; // Oblique projection vector with minimum length
-		double lengthSQR_o;
+	static inline void JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T directionPoint, PT_vector_T finishPoint, double eps_on_hyperplane) {
+		PT_vector_T o;		// Oblique projection vector
+		PT_vector_T o_min;	// Oblique projection vector with minimum length
+		PT_vector_T d;		// Direction vector
+		double length_o;
 		double* z = startPoint;
-		double* d = directionVector;
 		double a_DoT_d;
+		double norm_d;
 		double norm_a_DoT_norm_d;
 		int location_z;
 		double a_DoT_z_MinuS_b;
-		double minLengthSQR = PP_INFINITY;
+		double minLength_o = PP_INFINITY;
+
+		Vector_Subtraction(directionPoint, startPoint, d);
+		norm_d = Vector_Norm(d);
+		if (norm_d < PP_EPS_ZERO) {
+			Vector_Copy(startPoint, finishPoint);
+			return;
+		}
 
 		Vector_Zeroing(o_min);
 
 		for (int i = 0; i < PD_m; i++) {
+			if (PD_isEquation[i])
+				continue;
+			if (PointBelongsToHyperplane_i(directionPoint, i, PP_EPS_ON_HYPERPLANE))
+				continue;
 
 			a_DoT_d = Vector_DotProduct(PD_A[i], d);
-			norm_a_DoT_norm_d = a_DoT_d / (PD_norm_a[i] * Vector_Norm(d));
+			norm_a_DoT_norm_d = a_DoT_d / (PD_norm_a[i] * norm_d);
 
-			location_z = PointLocation_i(z, i, eps_zero, &a_DoT_z_MinuS_b);
+			location_z = PointLocation_i(z, i, eps_on_hyperplane, &a_DoT_z_MinuS_b);
 			switch (location_z) {
 			case PP_ON_HYPERPLANE:
-				if (fabs(norm_a_DoT_norm_d) < eps_zero)
+
+				/*DEBUG JumpingOnPolytope**
+				#ifdef PP_DEBUG
+				if (norm_a_DoT_norm_d >= PP_EPS_ZERO)
+					cout << "Worker " << BSF_sv_mpiRank << ": JumpingOnPolytope: constraint " << i << ":\t\t\tnorm_a_DoT_norm_d = " << norm_a_DoT_norm_d << endl;
+				#endif // PP_DEBUG /**/
+
+				if (fabs(norm_a_DoT_norm_d) < PP_EPS_ZERO)
 					continue;
 				if (norm_a_DoT_norm_d < 0)
 					continue;
@@ -587,7 +657,7 @@ namespace SF {
 				Vector_Copy(startPoint, finishPoint);
 				return;
 			case PP_INSIDE_HALFSPACE:
-				if (fabs(norm_a_DoT_norm_d) < eps_zero)
+				if (fabs(norm_a_DoT_norm_d) < PP_EPS_ZERO)
 					continue;
 				if (norm_a_DoT_norm_d < 0)
 					continue;
@@ -595,12 +665,15 @@ namespace SF {
 				// norm_a_DoT_norm_d > 0
 				// Oblique projection vector: o = -(<a,z> - b)d/<a, d>
 				Vector_MultiplyByNumber(d, -a_DoT_z_MinuS_b / a_DoT_d, o);
-				lengthSQR_o = Vector_NormSquare(o);
-				if (minLengthSQR > lengthSQR_o) {
-					minLengthSQR = lengthSQR_o;
+				length_o = Vector_Norm(o);
+				if (minLength_o > length_o) {
+					minLength_o = length_o;
 					Vector_Copy(o, o_min);
 				}
 				break;
+			case PP_OUTSIDE_HALFSPACE:
+				cout << "JumpingOnPolytope error: Point is outside halfspace!\n";
+				assert(false);
 			default:
 				assert(false);
 			}
@@ -616,7 +689,7 @@ namespace SF {
 	static inline void MakeListOfNotIncludingHalfspaces(PT_vector_T x, int* notIncludingHalfspacesList, double eps_on_hyperplane) {
 		int mo = 0;
 		for (int i = 0; i < PD_m; i++)
-			if (!PointBelongsHalfspace_i(x, i, eps_on_hyperplane)) {
+			if (!PointBelongsToHalfspace_i(x, i, eps_on_hyperplane)) {
 				notIncludingHalfspacesList[mo] = i;
 				mo++;
 			}
@@ -630,7 +703,7 @@ namespace SF {
 		for (int i = 0; i < PD_m; i++) {
 			if (PD_isEquation[i])
 				continue;
-			if (PointBelongsHyperplane_i(u, i, eps_on_hyperplane)) {
+			if (PointBelongsToHyperplane_i(u, i, eps_on_hyperplane)) {
 				neHyperplanes_u[*mneh_u] = i;
 				(*mneh_u)++;
 			}
@@ -1333,7 +1406,7 @@ namespace SF {
 		char ch;
 		PT_MPS_name_T next_RHS_name;
 		PT_MPS_name_T rowName;
-		float RHS_value;
+		double RHS_value;
 		int rowIndex;
 
 		for (int p = 0; p < PP_MPS_NAME_LENGTH; p++)
@@ -1394,12 +1467,12 @@ namespace SF {
 
 		MPS_SkipSpaces(stream);
 
-		if (fscanf(stream, "%f", &RHS_value) < 1) {
+		if (fscanf(stream, "%lf", &RHS_value) < 1) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 				cout << "MPS_ReadRHS_line: Unexpected end of line!\n";
 			return false;
 		}
-		row[rowIndex].RHS_value = (double)RHS_value;
+		row[rowIndex].RHS_value = RHS_value;
 
 		MPS_SkipSpaces(stream);
 
@@ -1433,12 +1506,12 @@ namespace SF {
 
 		MPS_SkipSpaces(stream);
 
-		if (fscanf(stream, "%f", &RHS_value) < 1) {
+		if (fscanf(stream, "%lf", &RHS_value) < 1) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 				cout << "MPS_ReadRHS_line: Unexpected end of line!\n";
 			return false;
 		}
-		row[rowIndex].RHS_value = (double)RHS_value;
+		row[rowIndex].RHS_value = RHS_value;
 
 		MPS_SkipSpaces(stream);
 
@@ -1456,15 +1529,11 @@ namespace SF {
 	}
 
 	static inline bool MPS_ReadValue(FILE* stream, double* value) {
-		float floatValue;
-
-		if (fscanf(stream, "%f", &floatValue) < 1) {
+		if (fscanf(stream, "%lf", value) < 1) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 				cout << "MPS_ReadValue: Error: Non-ASCII character.\n";
 			return false;
 		}
-
-		*value = (double)floatValue;
 		return true;
 	}
 
@@ -2077,7 +2146,7 @@ namespace SF {
 		for (int i = 0; i < PD_m; i++) {
 			if (PD_isEquation[i])
 				continue;
-			if (PointBelongsHyperplane_i(x, i, eps_on_hyperplane))
+			if (PointBelongsToHyperplane_i(x, i, eps_on_hyperplane))
 				number++;
 		}
 		return number;
@@ -2090,7 +2159,7 @@ namespace SF {
 		return s;
 	}
 
-	static inline void	ObliqueProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T d, PT_vector_T o, double eps_zero, int* exitCode) {
+	static inline void	ObliqueProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T d, PT_vector_T o, double eps_on_hyperplane, double eps_cos, int* exitCode) {
 		// Oblique projecting vector o of point z onto Half-space H_i with respect to vector d
 		double a_DoT_d;	// <a,d>
 		double norm_a_DoT_norm_d; // <a,d>/(||a||*||d||)
@@ -2099,7 +2168,7 @@ namespace SF {
 
 		Vector_Zeroing(o);
 
-		*exitCode = PointLocation_i(z, i, eps_zero, &a_DoT_z_MinuS_b);
+		*exitCode = PointLocation_i(z, i, eps_on_hyperplane, &a_DoT_z_MinuS_b);
 		a_DoT_d = Vector_DotProduct(PD_A[i], d); // <a,d>
 
 		a_DoT_d = Vector_DotProduct(PD_A[i], d);
@@ -2111,7 +2180,7 @@ namespace SF {
 			Vector_Copy(z, o);
 			return;
 		case PP_OUTSIDE_HALFSPACE:
-			if (fabs(norm_a_DoT_norm_d) < eps_zero) {
+			if (fabs(norm_a_DoT_norm_d) < eps_cos) {
 				*exitCode = PP_PARALLEL;
 				Vector_SetValue(o, PP_INFINITY);
 				return;
@@ -2162,7 +2231,14 @@ namespace SF {
 		Vector_MultiplyByNumber(PD_A[i], -(Vector_DotProduct(PD_A[i], x) - PD_b[i]) / ns, p);
 	}
 
-	static inline bool PointBelongsHalfspace_i(PT_vector_T x, int i, double eps_on_hyperplane) {
+	static inline bool PointBelongsToFlat(PT_vector_T x, int* hyperplaneList, int hyperplaneCount, double eps_on_hyperplane) { // If the point belongs to the flat
+		for (int i = 0; i < hyperplaneCount; i++)
+			if (!PointBelongsToHyperplane_i(x, hyperplaneList[i], eps_on_hyperplane))
+				return false;
+		return true;
+	}
+
+	static inline bool PointBelongsToHalfspace_i(PT_vector_T x, int i, double eps_on_hyperplane) {
 		double a_DoT_x_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
 		double distanceToHyperplane = fabs(a_DoT_x_MinuS_b) / PD_norm_a[i];
 		if (distanceToHyperplane < eps_on_hyperplane)
@@ -2174,15 +2250,16 @@ namespace SF {
 		return false;
 	}
 
-	static inline bool PointBelongsHyperplane_i(PT_vector_T x, int i, double eps_on_hyperplane) {
+	static inline bool PointBelongsToHyperplane_i(PT_vector_T x, int i, double eps_on_hyperplane) {
 		double dist = Distance_PointToHyperplane_i(x, i);
 
-#ifdef PP_DEBUG
-		if (dist > PP_EPS_ON_HYPERPLANE && dist < PP_EPS_ON_HYPERPLANE * 100) {
-			cout << "Distance from testing point to hyperplane " << i << " equals " << dist << " that is less than PP_EPS_ON_HYPERPLANE*100, but greater than PP_EPS_ON_HYPERPLANE!\n";
-			system("pause");
+		/*DEBUG PointBelongsToHyperplane_i**
+		#ifdef PP_DEBUG
+		if (dist > eps_on_hyperplane && dist < eps_on_hyperplane * 10) {
+			cout << "Distance from testing point is less than " << PP_EPS_ON_HYPERPLANE*10 << ", but greater than " << PP_EPS_ON_HYPERPLANE << "!\n";
+			//system("pause");
 		}
-#endif
+		#endif // PP_DEBUG /**/
 
 		if (dist < eps_on_hyperplane)
 			return true;
@@ -2190,16 +2267,9 @@ namespace SF {
 			return false;
 	}
 
-	static inline bool PointBelongsPolytope(PT_vector_T x, double eps_on_hyperplane) { // If the point belongs to the polytope with prescigion of eps_on_hyperplane
+	static inline bool PointBelongsToPolytope(PT_vector_T x, double eps_on_hyperplane) { // If the point belongs to the polytope with prescigion of eps_on_hyperplane
 		for (int i = 0; i < PD_m; i++)
-			if (!PointBelongsHalfspace_i(x, i, eps_on_hyperplane))
-				return false;
-		return true;
-	}
-
-	static inline bool PointBelongsOuterCone(PT_vector_T x, int* notIncludingHalfspacesList, double eps_on_hyperplane) { // If the point belongs to the outer cone with prescigion of eps_on_hyperplane
-		for (int i = 0; i < PD_m && notIncludingHalfspacesList[i] >= 0; i++)
-			if (PointBelongsHalfspace_i(x, i, eps_on_hyperplane))
+			if (!PointBelongsToHalfspace_i(x, i, eps_on_hyperplane))
 				return false;
 		return true;
 	}
@@ -2222,24 +2292,27 @@ namespace SF {
 		return false;
 	}
 
-	static inline bool PointIsVertex_i(PT_vector_T x, double eps_on_hyperplane) {
-		int hCount = 0;
+	static inline bool PointIsVertex(PT_vector_T x, double eps_on_hyperplane) {
+		int count_x = 0; // The number of inequality hyperplanes including the point x
 
-		for (int i = 0; i < PD_m; i++)
-			if (PointBelongsHyperplane_i(x, i, eps_on_hyperplane))
-				hCount++;
+		for (int i = 0; i < PD_m; i++) {
+			if (PD_isEquation[i])
+				continue;
+			if (PointBelongsToHyperplane_i(x, i, eps_on_hyperplane))
+				count_x++;
+		}
 
-		if (hCount >= PD_n)
+		if (count_x >= PD_neq)
 			return true;
 		else
 			return false;
 	}
 
-	static inline int PointLocation_i(PT_vector_T x, int i, double eps_zero, double* a_DoT_x_MinuS_b) {
-
+	static inline int PointLocation_i(PT_vector_T x, int i, double eps_on_hyperplane, double* a_DoT_x_MinuS_b) {
 		*a_DoT_x_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
+		double dist = fabs(*a_DoT_x_MinuS_b) / PD_norm_a[i];
 
-		if (fabs(*a_DoT_x_MinuS_b) / PD_norm_a[i] < eps_zero)// <a,x> = b
+		if (dist < eps_on_hyperplane)// <a,x> = b
 			return PP_ON_HYPERPLANE;
 
 		if (*a_DoT_x_MinuS_b < 0)								// <a,x> < b
@@ -2273,7 +2346,7 @@ namespace SF {
 		cout << "{";
 
 		for (int i = 0; i < PD_m; i++) {
-			if (PointBelongsHalfspace_i(x, i, eps_on_hyperplane)) {
+			if (PointBelongsToHalfspace_i(x, i, eps_on_hyperplane)) {
 				if (comma)
 					cout << ", ";
 				else
@@ -2291,7 +2364,7 @@ namespace SF {
 		cout << "{";
 
 		for (int i = 0; i < PD_m; i++) {
-			if (!PointBelongsHalfspace_i(x, i, eps_on_hyperplane)) {
+			if (!PointBelongsToHalfspace_i(x, i, eps_on_hyperplane)) {
 				if (comma)
 					cout << ", ";
 				else
@@ -2309,7 +2382,7 @@ namespace SF {
 		cout << "{";
 
 		for (int i = 0; i < PD_m; i++) {
-			if (PointBelongsHyperplane_i(x, i, eps_on_hyperplane)) {
+			if (PointBelongsToHyperplane_i(x, i, eps_on_hyperplane)) {
 				if (comma)
 					cout << ", ";
 				else
@@ -2329,7 +2402,7 @@ namespace SF {
 		for (int i = 0; i < PD_m; i++) {
 			if (PD_isEquation[i])
 				continue;
-			if (PointBelongsHyperplane_i(x, i, eps_on_hyperplane))
+			if (PointBelongsToHyperplane_i(x, i, eps_on_hyperplane))
 				mne++;
 		}
 
@@ -2356,6 +2429,16 @@ namespace SF {
 			return fabs(calculatedValue - trueValue);
 		else
 			return fabs(calculatedValue - trueValue) / fabs(trueValue);
+	}
+
+	static inline void Tuning_Eps_PointBelongsToFlat(PT_vector_T x, int* hyperplaneList, int hyperplaneCount, double* eps) {
+		while (!PointBelongsToFlat(x, hyperplaneList, hyperplaneCount, *eps))
+			(*eps) *= 2;
+	}
+
+	static inline void Tuning_Eps_PointBelongsToPolytope(PT_vector_T x, double* eps) {
+		while (!PointBelongsToPolytope(x, *eps))
+			(*eps) *= 2;
 	}
 
 	static inline void TWIDDLE // https://doi.org/10.1145/362384.362502
@@ -2448,6 +2531,13 @@ namespace SF {
 			shiftedPoint[j] = point[j] + shiftVector[j] * factor;
 	}
 
+	static inline void SmallStep(PT_vector_T point, PT_vector_T direction, double stepLength, PT_vector_T stepPoint) {
+		PT_vector_T stepVector;
+		Vector_Copy(direction, stepVector);
+		Vector_MultiplyEquals(stepVector, stepLength / Vector_Norm(direction));
+		Vector_Addition(point, stepVector, stepPoint);
+	}
+
 	static inline void Vector_Addition(PT_vector_T x, PT_vector_T y, PT_vector_T z) {  // z = x + y
 		for (int j = 0; j < PD_n; j++)
 			z[j] = x[j] + y[j];
@@ -2528,6 +2618,9 @@ namespace SF {
 		double sign;
 		double absValue;
 
+		if (eps_round == 0)
+			return;
+
 		for (int j = 0; j < PD_n; j++) {
 			if (fabs(x[j]) < eps_round) {
 				x[j] = 0;
@@ -2602,9 +2695,9 @@ namespace PF {
 	}
 
 	static inline void PreparationForIterations(PT_vector_T u, int* flatDim) {
+
 		MakeNeHyperplaneList(u, PD_neHyperplanes_u, &PD_mneh_u, PP_EPS_ON_HYPERPLANE);
 		assert(PD_mneh_u <= PP_MM);
-
 		*flatDim = PD_n - PD_meq - PD_mneh_u; // Current flat dimension
 
 #ifdef PP_DEBUG

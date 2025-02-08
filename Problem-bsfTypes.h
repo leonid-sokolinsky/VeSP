@@ -21,7 +21,11 @@ struct PT_bsf_mapElem_T {	// Type of map-list elements
 
 struct PT_bsf_reduceElem_T {	// Type of reduce-list elements for Job 0 (default)	
 	PT_vector_T projectingVector;	// Orthogonal projecting vector
+#ifdef PP_BIPROJECTION
+	int nonZeroCounter;				// Counter of nonzero elements
+#else
 	double distance;				// Distance to projetion point
+#endif // PP_BIPROJECTION
 };
 
 struct PT_bsf_reduceElem_T_1 {	// Type of reduce-list elements for Job 1

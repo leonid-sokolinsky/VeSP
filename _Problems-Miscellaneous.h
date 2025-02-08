@@ -9,10 +9,11 @@ This include file is part of Problem-Parameters.h
 #pragma once
 
 //=========================== problem Parameters ===============================
-#define PP_EPS_ZERO					1E-9		// Accuracy for comparison with zero
-
-#define PP_EPS_PROJECTION		PP_EPS_ZERO	// Precision to calculate projection
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7		// Length of Objective Vector
+#define PP_EPS_ZERO				1E-9				// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION		PP_EPS_ZERO			// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE	(PP_EPS_ZERO*10)	// Accuracy of belonging to hyperplane
+#define PP_EPS_PROJECTION		PP_EPS_ZERO			// Precision to calculate projection
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7			// Length of Objective Vector
 
 /*============================== nguyen5 LP problem ============================*
 #define PP_PROBLEM_NAME	"nguyen5"
