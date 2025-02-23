@@ -15,14 +15,16 @@ namespace PF {
 //====================== Shared Functions ===========================
 namespace SF {
 	unsigned long long BinomialCoefficient(int n, int k);
+	void	Bitscale_Create(bool* bitscale, int m, int* hyperplanes, int mh);
 	double	Distance_PointToHalfspace_i(PT_vector_T x, int i);
 	double	Distance_PointToHyperplane_i(PT_vector_T x, int i);
 	double	Distance_PointToPoint(PT_vector_T x, PT_vector_T y);
 	double	Distance_PointToPolytope(PT_vector_T x);
 	double	DistanceSQR_PointToPoint(PT_vector_T x, PT_vector_T y);
-	void	Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_zero, int maxProjectingIter, PT_vector_T w, int* success);
-	void	Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_zero, int maxProjectingIter, PT_vector_T w, int* success);
-	void	JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T directionVector, PT_vector_T finishPoint, double eps_on_hyperplane);
+	bool	EpsilonsAreOK(double eps_zero, double eps_projection, double eps_on_hyperplane);
+	void	Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success);
+	void	Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success);
+	void	JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T direcionVector, PT_vector_T finishPoint, double eps_on_hyperplane, double eps_zero, bool* parallelHPlanes, int* success);
 	void	MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a);
 	void	MakeListOfNotIncludingHalfspaces(PT_vector_T x, int* notIncludingHalfspacesList, double eps);
 	void	MakeNeHyperplaneList(PT_vector_T u, int* neHyperplanes_u, int* mneh_u, double eps);
@@ -63,8 +65,7 @@ namespace SF {
 	void	MTX_SkipComments(FILE* stream);
 	int		Number_IncludingNeHyperplanes(PT_vector_T x, double eps);
 	double	ObjF(PT_vector_T x);
-	void	ObliqueProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T d, PT_vector_T o, double eps_on_hyperplane, double eps_cos, int* exitCode);
-	void	OrthogonalProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T r, double eps, int* exitcode);
+	void	OrthogonalProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T r, int* success);
 	void	OrthogonalProjectingVectorOntoHyperplane_i(PT_vector_T x, int i, PT_vector_T p);
 	bool	PointBelongsToFlat(PT_vector_T x, int* hyperplaneList, int hyperplaneCount, double eps_on_hyperplane);
 	bool	PointBelongsToHalfspace_i(PT_vector_T point, int i, double eps);
@@ -72,9 +73,9 @@ namespace SF {
 	bool	PointBelongsToPolytope(PT_vector_T x, double eps);
 	void	PointHomothety(PT_vector_T x, PT_vector_T center, double ratio);
 	bool	PointInsideHalfspace_i(PT_vector_T x, int i, double eps);
+	bool	PointIsBoundary(PT_vector_T x, double eps_on_hyperplane);
 	bool	PointIsVertex(PT_vector_T x, double eps_on_hyperplane);
 	int		PointLocation_i(PT_vector_T x, int i, double eps, double* a_DoT_x_MinuS_b);
-	void	PolytopeHomothety(PT_vector_T center, double ratio);
 	void	Print_Constraints();
 	void	Print_HalfspacesIncludingPoint(PT_vector_T x, double eps);
 	void	Print_HalfspacesOutOfPoint(PT_vector_T x, double eps);

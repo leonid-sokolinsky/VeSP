@@ -18,7 +18,7 @@ static int PD_mne_p;				// Number of inequality-hyperplanes used for pseudoproje
 static int PD_flatDim;				// Current flat dimension
 static int PD_iterNo;				// Number of iterations
 #ifdef PP_DEBUG
-static int PD_projectionCounter;	// Counter of nonzero orthogonal projections in PC_bsf_MapF(*)
+static int PD_projectionCounter;	// Counter in PC_bsf_MapF(*)
 #endif
 //========================== Problem structures ====================================
 static PT_matrix_T PD_A;			// Matrix of constraint coefficients
@@ -33,5 +33,6 @@ static PT_vector_T PD_objVector;			// Used for pseudoprojecting
 static int PD_neHyperplanes_u[PP_MM];		// Index of inequality-hyperplanes that include point u
 static int PD_alHyperplanes_p[PP_N - 1];	// Index of all hyperplanes used for pseudoprojecting
 static int PD_projectionHyperplanesList[PP_N - 1];	// Randomized index of all hyperplanes used for pseudoprojection
+static PT_bitscale_T PD_flatBitscale;		// Bit scale that tags all hyperplanes forming the edge
 //========================== Input/Output ====================================
 static string PD_problemName;

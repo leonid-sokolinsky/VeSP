@@ -11,11 +11,11 @@ This source code has been produced with using BSF-skeleton
 
 //#define PP_PATH "Problems/"
 
-/**
-#include "../_Problems-Miscellaneous.h"
+/**/
+#include "_Problems-Miscellaneous.h"
 #define PP_PATH "../../Set-of-LP-Problems/Miscellaneous-LP/"
 
-/**/
+/**
 #include "_Problems-NetLib-LP.h"
 #define PP_PATH "../../Set-of-LP-Problems/NetLib-LP/"
 
@@ -61,6 +61,3 @@ This source code has been produced with using BSF-skeleton
 #define PP_ON_HYPERPLANE			1
 #define PP_INSIDE_HALFSPACE			2
 #define PP_OUTSIDE_HALFSPACE		3
-#define PP_PARALLEL					4
-#define PP_RECESSIVE				5
-#define PP_NONDEGENERATE_PROJECTING	9

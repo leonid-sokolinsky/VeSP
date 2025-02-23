@@ -88,10 +88,13 @@ This include file is part of Problem-Parameters.h
 #define PP_N 41	// Number of variables in mps-file (after conversion to standard form)
 #define PP_MAX_OBJ_VALUE 1749.9001299062057129526866493726
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11				// Accuracy for comparison with zero
-#define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*100)	// Accuracy of belonging to hyperplane
-#define PP_EPS_PROJECTION			(PP_EPS_ZERO*100)	// Precision to calculate projection
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
+#define PP_EPS_ZERO					1E-11	// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE		1E-10	// Accuracy of belonging to hyperplane
+//#define PP_EPS_PROJECTION			1E-11	// Precision to calculate projection
+#define PP_EPS_PROJECTION			1E-4	// Precision to calculate projection
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7	// Length of Objective Vector
+//------------------------------------------------------------------------------
+#define PP_BIPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 2255
 // Number of iterations: 10
