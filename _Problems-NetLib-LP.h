@@ -63,7 +63,7 @@ This include file is part of Problem-Parameters.h
 // Objective function: -33843.6
 //------------------------------------------------------------------------------
 
-/*============================== blend LP problem ==============================*
+/*============================== blend LP problem ==============================*/
 // Number of equations: 43
 // Subspace dimension: 40
 #define PP_PROBLEM_NAME		"blend"
@@ -71,16 +71,19 @@ This include file is part of Problem-Parameters.h
 #define PP_N 83		// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 30.812149845828220173774356124984	// Exact maximum value of objective function
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11				// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			(PP_EPS_ZERO*10)	// Precision to calculate projection
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
+#define PP_EPS_ZERO					1E-11					// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION			(PP_EPS_ZERO*10)		// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE		(PP_EPS_PROJECTION*100)	// Accuracy of belonging to hyperplane
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 68
 // Number of iterations: 1
 // Objective function: 22.90946493061475
 //------------------------------------------------------------------------------
 
-/*============================== kb2 LP problem ================================*/
+/*============================== kb2 LP problem ================================*
 // Number of equations: 16
 // Subspace dimension: 25
 #define PP_PROBLEM_NAME		"kb2"
@@ -88,13 +91,12 @@ This include file is part of Problem-Parameters.h
 #define PP_N 41	// Number of variables in mps-file (after conversion to standard form)
 #define PP_MAX_OBJ_VALUE 1749.9001299062057129526866493726
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11	// Accuracy for comparison with zero
-#define PP_EPS_ON_HYPERPLANE		1E-10	// Accuracy of belonging to hyperplane
-//#define PP_EPS_PROJECTION			1E-11	// Precision to calculate projection
-#define PP_EPS_PROJECTION			1E-4	// Precision to calculate projection
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7	// Length of Objective Vector
-//------------------------------------------------------------------------------
-#define PP_BIPROJECTION
+#define PP_EPS_ZERO					1E-11					// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION			(PP_EPS_ZERO*10)		// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE		(PP_EPS_PROJECTION*100)	// Accuracy of belonging to hyperplane
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
+//-------------------------- Compilation Modes ---------------------------------
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 2255
 // Number of iterations: 10

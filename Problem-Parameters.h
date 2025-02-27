@@ -26,7 +26,7 @@ This source code has been produced with using BSF-skeleton
 //-------------------------- Compilation Modes -----------------------
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
-#define PP_SAVE_RESULT
+//#define PP_SAVE_RESULT
 //#define PP_SAVE_ITER_RESULT
 //#define PP_BIPROJECTION
 

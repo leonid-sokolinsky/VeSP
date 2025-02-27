@@ -30,10 +30,10 @@ void PC_bsf_Init(bool* success) {
 	PD_m = 0;
 	PD_n = 0;
 
-	if (!EpsilonsAreOK(PP_EPS_ZERO, PP_EPS_PROJECTION, PP_EPS_ON_HYPERPLANE)) {
+	if (!CheckEpsilons(PP_EPS_ZERO, PP_EPS_PROJECTION, PP_EPS_ON_HYPERPLANE)) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 			cout << "PC_bsf_Init error: The following condition must be satisfied:\n"
-			<< "PP_EPS_ON_HYPERPLANE >  PP_EPS_PROJECTION > PP_EPS_ZERO > DBL_EPSILON = "
+			<< "PP_EPS_ON_HYPERPLANE >=  PP_EPS_PROJECTION >= PP_EPS_ZERO >= DBL_EPSILON = "
 			<< DBL_EPSILON << endl;
 		*success = false;
 		return;
@@ -390,6 +390,15 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 		return;
 	}
 
+	if (!PointBelongsToPolytope(PD_u, PP_EPS_ON_HYPERPLANE)) {
+			cout << "PC_bsf_ProcessResults error: Current approximation u does NOT belong to polytope with precision of PP_EPS_ON_HYPERPLANE = " << PP_EPS_ON_HYPERPLANE << endl;
+			double eps_on_polytope = PP_EPS_ON_HYPERPLANE;
+			Tuning_Eps_PointBelongsToPolytope(PD_u, &eps_on_polytope);
+			cout << "Point u0 will belong to polytope with precision of " << eps_on_polytope << endl;
+		*exit = true;
+		return;
+	}
+
 	PD_iterNo++;
 	Vector_Addition(PD_u, PD_objVector, parameter->v);
 	Vector_Copy(PD_u, parameter->u);
@@ -489,6 +498,10 @@ namespace SF {
 			bitscale[i] = false;
 		for (int ih = 0; ih < mh; ih++)
 			bitscale[hyperplanes[ih]] = true;
+	}
+
+	static inline bool CheckEpsilons(double eps_zero, double eps_projection, double eps_on_hyperplane) {
+		return (eps_zero >= DBL_EPSILON && eps_projection >= eps_zero && eps_on_hyperplane >= eps_projection);
 	}
 
 	static inline double Distance_PointToHalfspace_i(PT_vector_T x, int i) {
