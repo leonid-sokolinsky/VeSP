@@ -383,15 +383,15 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 
 	Bitscale_Create(PD_flatBitscale, PD_m, PD_alHyperplanes_p, PD_meq + PD_mne_p);
 
-	PT_vector_T directionVector; // Direction for jumping
+	PT_vector_T jumpVector; // Direction for jumping
 	if (ObjF(w) > ObjF(PD_u))
-		Vector_Subtraction(w, PD_u, directionVector);
+		Vector_Subtraction(w, PD_u, jumpVector);
 	else
-		Vector_Subtraction(PD_u, w, directionVector);
+		Vector_Subtraction(PD_u, w, jumpVector);
 
 	int success;
 	//cout << "w =\t"; Print_Vector(w); cout << endl;///////////////////////////////////////////////////////////////////////////////////////
-	JumpingOnPolytope(PD_u, directionVector, u_nex, PP_EPS_JUMP_VECTOR_LEN, PP_EPS_ON_HYPERPLANE, PP_EPS_ZERO, PD_flatBitscale, &success);//
+	JumpingOnPolytope(PD_u, jumpVector, u_nex, PP_EPS_JUMP_VECTOR_LEN, PP_EPS_ON_HYPERPLANE, PP_EPS_ZERO, PD_flatBitscale, &success);//
 	//cout << "u_nex =\t"; Print_Vector(u_nex); cout << endl;///////////////////////////////////////////////////////////////////////////////
 	//cout << "PC_bsf_ProcessResults: ObjF(u) =\t" << setprecision(24) << ObjF(PD_u) << endl;
 	//cout << "PC_bsf_ProcessResults: ObjF(u_nex) =\t" << ObjF(u_nex)  << setprecision(PP_SETW / 2)<< endl;
@@ -577,14 +577,14 @@ namespace SF {
 		return Vector_NormSquare(z);
 	}
 
-	static inline void Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success) {
+	static inline void Flat_BipProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* exitCode) {
 		PT_vector_T p;
 		PT_vector_T r;
 		int iterCount = 0;
 		double length_r;
 
 		Vector_Copy(v, w);
-		*success = true;
+		*exitCode = true;
 
 		do {
 			Vector_Zeroing(r);
@@ -605,20 +605,20 @@ namespace SF {
 			#ifdef PP_DEBUG
 			double dist = Distance_PointToPoint(w, w_prev);
 			if (dist < PF_DBL_EPSILON * 10) { // Significand bit depth is exceeded!
-				*success = -1;
+				*exitCode = -1;
 				return;
 			}
 			#endif // PP_DEBUG
 
 			iterCount++;
 			if (iterCount > maxProjectingIter) {
-				*success = -2;
+				*exitCode = -2;
 				break;
 			}
 
 			length_r = Vector_Norm(r);
 
-			/*DEBUG Flat_BipProjection**
+			/*DEBUG Flat_BipProjection*/
 			#ifdef PP_DEBUG
 			if (iterCount % PP_PROJECTION_COUNT == 0)
 				//if (BSF_sv_mpiRank == 0)
@@ -633,14 +633,14 @@ namespace SF {
 		#endif // PP_DEBUG /**/
 	}
 
-	static inline void Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* success) {
+	static inline void Flat_MaxProjection(int* flatHyperplanes, int m_flat, PT_vector_T v, double eps_projection, int maxProjectingIter, PT_vector_T w, int* exitCode) {
 		PT_vector_T p;
 		PT_vector_T p_max;
 		double max_length;
 		int iterCount = 0;
 
 		Vector_Copy(v, w);
-		*success = true;
+		*exitCode = true;
 
 		do {
 			max_length = 0;
@@ -658,11 +658,11 @@ namespace SF {
 
 			iterCount++;
 			if (iterCount > maxProjectingIter) {
-				*success = -2;
+				*exitCode = -2;
 				break;
 			}
 
-			/*DEBUG Flat_MaxProjection**
+			/*DEBUG Flat_MaxProjection*/
 			#ifdef PP_DEBUG
 			if (iterCount % PP_PROJECTION_COUNT == 0)
 				//if (BSF_sv_mpiRank == 0)
@@ -677,7 +677,7 @@ namespace SF {
 		#endif // PP_DEBUG /**/
 	}
 
-	static inline void JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T jumpVector, PT_vector_T finishPoint, double eps_jump_vector_len, double eps_on_hyperplane, double eps_zero, bool* parallelHPlanes, int* success) {
+	static inline void JumpingOnPolytope(PT_vector_T startPoint, PT_vector_T jumpVector, PT_vector_T finishPoint, double eps_jump_vector_len, double eps_on_hyperplane, double eps_zero, bool* parallelHPlanes, int* exitCode) {
 		PT_vector_T o;		// Oblique projection vector
 		PT_vector_T o_min;	// Oblique projection vector with minimum length
 		double length_o;
@@ -690,7 +690,7 @@ namespace SF {
 		double* z = startPoint;
 		double minLength_o = PP_INFINITY;
 
-		*success = 1;
+		*exitCode = 1;
 
 		/*DEBUG JumpingOnPolytope**
 		#ifdef PP_DEBUG
@@ -704,7 +704,7 @@ namespace SF {
 			cout << "Worker " << BSF_sv_mpiRank << ": JumpingOnPolytope: norm_d < eps_jump_vector_len => return" << endl;
 			#endif // PP_DEBUG /**/
 			Vector_Copy(startPoint, finishPoint);
-			*success = -1; // Tiny length of direction vector
+			*exitCode = -1; // Tiny length of direction vector
 			return;
 		}
 
@@ -737,7 +737,7 @@ namespace SF {
 						<< ") \tStart point belong to hyperplane, finish point is outside half-space. => return" << endl;
 					#endif // PP_DEBUG /**/
 					Vector_Copy(startPoint, finishPoint);
-					*success = -2; // Start point belong to hyperplane, finish point is outside half-space
+					*exitCode = -2; // Start point belong to hyperplane, finish point is outside half-space
 					return;
 				}
 
@@ -2286,7 +2286,7 @@ namespace SF {
 		return s;
 	}
 
-	static inline void OrthogonalProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T r, int* success) {
+	static inline void OrthogonalProjectingVectorOntoHalfspace_i(PT_vector_T z, int i, PT_vector_T r, bool* success) {
 		double factor;
 		double a_DoT_z_MinuS_b = Vector_DotProduct(PD_A[i], z) - PD_b[i]; // <a,z> - b
 
@@ -2486,7 +2486,35 @@ namespace SF {
 			(*eps) *= 2;
 	}
 
-	static inline void TWIDDLE // https://doi.org/10.1145/362384.362502
+	static inline void TWIDDLE__CodeToSubset(int code, int* a, int* c, int n, int m, int* p) {
+		static int x, y, z;
+		static bool done;
+
+		TWIDDLE_Make_p(p, n, m);
+		for (int k = 0; k < m; k++)
+			c[k] = a[n - m + k];
+
+		if (code == 0) return;
+
+		for (int i = 0; i < code; i++) {
+			TWIDDLE_Run(&x, &y, &z, p, &done);
+			assert(!done);
+			c[z - 1] = a[x - 1];
+		}
+	}
+
+	static inline void TWIDDLE_Make_p(int* p, int n, int m) {
+		// p - auxiliary integer array for generating all combinations of m out of n objects.
+		assert(n >= m && m > 0);
+		p[0] = n + 1;
+		p[n + 1] = -2;
+		for (int j = 1; j <= n - m; j++)
+			p[j] = 0;
+		for (int j = n - m + 1; j <= n; j++)
+			p[j] = j - n + m;
+	}
+
+	static inline void TWIDDLE_Run // https://doi.org/10.1145/362384.362502
 	(int* x, int* y, int* z, int* p, bool* done) {
 		int i, j, k;
 		j = 0;
@@ -2540,35 +2568,6 @@ namespace SF {
 		p[i] = 0;
 		*x = j;
 		*y = i;
-	}
-
-	static inline void TWIDDLE_CodeToSubset(int code, int* a, int* c, int n, int m, int* x, int* y, int* z, int* p, bool* done, int* nextI) {
-		if (*nextI == 0) {
-			for (int k = 0; k < m; k++)
-				c[k] = a[n - m + k];
-			if (code == 0) {
-				(*nextI)++;
-				return;
-			}
-		}
-
-		do {
-			TWIDDLE(x, y, z, p, done);
-			assert(!*done);
-			c[*z - 1] = a[*x - 1];
-			(*nextI)++;
-		} while (*nextI < code);
-	}
-
-	static inline void TWIDDLE_Make_p(int* p, int n, int m) {
-		// p - auxiliary integer array for generating all combinations of m out of n objects.
-		assert(n >= m && m > 0);
-		p[0] = n + 1;
-		p[n + 1] = -2;
-		for (int j = 1; j <= n - m; j++)
-			p[j] = 0;
-		for (int j = n - m + 1; j <= n; j++)
-			p[j] = j - n + m;
 	}
 
 	static inline void Shift(PT_vector_T point, PT_vector_T shiftVector, double factor, PT_vector_T shiftedPoint) {
