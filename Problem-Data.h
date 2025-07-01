@@ -13,8 +13,8 @@ static int PD_m;					// Total number of constraints
 static int PD_meq;					// Number of constraints being equations
 static int PD_n;					// Space dimension
 static int PD_neq;					// Dimension of the subspace of intersection of equation-hyperplanes (PD_n = PD_neq + PD_meq)
-static int PD_mneh_u;				// Number of inequality-hyperplanes that include point u
-static int PD_mne_p;				// Number of inequality-hyperplanes used for pseudoprojection
+static int PD_mneh_u;				// Number of bounding hyperplanes that include point u
+static int PD_mne_p;				// Number of bounding hyperplanes used for pseudoprojection
 static int PD_flatDim;				// Current flat dimension
 static int PD_iterNo;				// Number of iterations
 #ifdef PP_DEBUG
@@ -29,10 +29,18 @@ static PT_vector_T PD_u;					// Current approximation
 static PT_vector_T PD_hi;					// Higher bound
 static PT_vector_T PD_lo;					// Lower bound
 static PT_column_T PD_norm_a;				// Column of norms of matrix rows
-static PT_vector_T PD_objVector;			// Used for pseudoprojecting
-static int PD_neHyperplanes_u[PP_MM];		// Index of inequality-hyperplanes that include point u
-static int PD_alHyperplanes_p[PP_N - 1];	// Index of all hyperplanes used for pseudoprojecting
-static int PD_projectionHyperplanesList[PP_N - 1];	// Randomized index of all hyperplanes used for pseudoprojection
-static PT_bitscale_T PD_flatBitscale;		// Bit scale that tags all hyperplanes forming the edge
-//========================== Input/Output ====================================
+static PT_vector_T PD_launchVector;			// Used for projecting
+static int PD_neHyperplanes_u[PP_MM];		// Index of bounding hyperplanes that include point u
+static int PD_alHyperplanes_p[PP_MM];	// Index of all hyperplanes used for pseudoprojecting
+static PT_bitscale_T PD_flatBitscale;		// Bit scale that tags all hyperplanes forming the flat
+//------------------------- Orthogonal projection onto line ---------------
+static double PD_D[PP_N][PP_N];		// Main matrix D
+static double PD_B[PP_N];			// Column B
+static double PD_Dv_B[PP_N];		// Dv-B
+static double PD_DT[PP_N][PP_N];	// Transposed D
+static double PD_DDT[PP_N][PP_N];	// D*DT
+//static double PD_DDT_[PP_N][PP_N];	// Copy of D*DT
+static double PD_DDTI[PP_N][PP_N];  // Inverse matrix to D*DT
+static double PD_DTDDTI[PP_N][PP_N];
+//========================== Input/Output =====================================
 static string PD_problemName;

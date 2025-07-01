@@ -16,12 +16,11 @@ struct PT_bsf_parameter_T {
 };
 
 struct PT_bsf_mapElem_T {	// Type of map-list elements
-	int hyperplaneI;		// Element of PD_projectionHyperplanesList
+	int stub;		// Not used
 };
 
 struct PT_bsf_reduceElem_T {	// Type of reduce-list elements for Job 0 (default)	
-	PT_vector_T projectingVector;	// Orthogonal projecting vector
-	double length;				// Distance to projection point
+	PT_vector_T w;				// Orthogonal projecting vector
 };
 
 struct PT_bsf_reduceElem_T_1 {	// Type of reduce-list elements for Job 1

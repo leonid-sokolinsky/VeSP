@@ -27,7 +27,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  21.4549732313109693393471
 // Relative error = 5.48e-14
 // Distance to polytope: 7.52393437408246337626684e-17
-// Number of including inequality hyperplanes: 5
+// Number of bounding hyperplanes: 5
 //------------------------------------------------------------------------------
 
 /*============================== simpleCube LP problem =========================*
@@ -46,15 +46,13 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
-//-------------------------- Compilation Modes ---------------------------------
-//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Computed objective value: 30000
 // Maximal objective value:  60000
 // Relative error = 0.5
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== cubeInHyperplane LP problem ===================*
@@ -76,7 +74,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  60000
 // Relative error = 0.5
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple1FxVar LP problem ========================*
@@ -99,7 +97,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  52500
 // Relative error = 0
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 2
+// Number of bounding hyperplanes: 2
 //------------------------------------------------------------------------------
 
 /*============================== simple1 LP problem =============================*
@@ -120,7 +118,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  55000
 // Relative error = 0.273
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple1.1 LP problem ===========================*
@@ -142,7 +140,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  40000
 // Relative error = 0
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple2 LP problem =============================*
@@ -170,7 +168,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  63500
 // Relative error = 0
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple3 LP problem =============================*
@@ -190,14 +188,14 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+#define PP_MEDIAN_LAUNCH_VECTOR
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Computed objective value: 46666.6666666666715173051
 // Maximal objective value:  55000
 // Relative error = 0.152
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple1min LP problem ==========================*
@@ -218,7 +216,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  -5000
 // Relative error = 0
 // Distance to polytope: 5.74324855666557789604281e-14
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple_zcv LP problem =========================*
@@ -239,7 +237,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  50000
 // Relative error = 0
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 4
+// Number of bounding hyperplanes: 4
 //------------------------------------------------------------------------------
 
 /*============================== simple_lcv LP problem =========================*
@@ -260,7 +258,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  50000.199999999997089617
 // Relative error = 0
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 4
+// Number of bounding hyperplanes: 4
 //------------------------------------------------------------------------------
 
 /*============================== simple_lcv_neg LP problem =====================*
@@ -281,7 +279,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  49998
 // Relative error = 1.46e-16
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 4
+// Number of bounding hyperplanes: 4
 //------------------------------------------------------------------------------
 
 /*============================== angle03 LP problem ============================*
@@ -302,7 +300,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  3000
 // Relative error = 0
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== angle04 LP problem ============================*
@@ -323,7 +321,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  3300
 // Relative error = 0.0612
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 4
+// Number of bounding hyperplanes: 4
 //------------------------------------------------------------------------------
 
 /*============================== cone3-0 LP problem ============================*
@@ -344,7 +342,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  132.5
 // Relative error = 0.226
 // Distance to polytope: 2.48316074980613530909199e-14
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== rnd3_3_Olkhovsky289 LP problem ================*
@@ -365,7 +363,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  671.95249485979684322956
 // Relative error = 0.0924
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== rnd3_3_Olkhovsky56 LP problem =================*
@@ -386,7 +384,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  990.797118755359633723856
 // Relative error = 0.208
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== rnd3_3_Olkhovsky331 LP problem ================*
@@ -407,7 +405,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  714.535477965318364113045
 // Relative error = 0.256
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== rnd3_3_Olkhovsky336 LP problem ================*
@@ -428,7 +426,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  998.193448648739490636217
 // Relative error = 0.256
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //-----------------------------------------------------------------------------
 
 /*============================== rnd3-10 LP problem ============================*
@@ -449,7 +447,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  852.028917900967712739657
 // Relative error = 0.379
 // Distance to polytope: 0
-// Number of including inequality hyperplanes: 3
+// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== rnd5-100 LP problem ===========================*/
@@ -460,7 +458,7 @@ This include file is part of Problem-Parameters.h
 //------------------------------------------------------------------------------
 #define PP_EPS_ZERO				1E-11					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE	1E-8					// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
 //#define PP_MAXPROJECTION
@@ -470,7 +468,7 @@ This include file is part of Problem-Parameters.h
 // Maximal objective value:  1848.43708058786501169379
 // Relative error = 0.389
 // Distance to polytope: 2.79644788773952504914563e-14
-// Number of including inequality hyperplanes: 5
+// Number of bounding hyperplanes: 5
 //------------------------------------------------------------------------------
 
 /*==============================================================================*/

@@ -5,19 +5,19 @@ Module: Problem-Parameters.h (Problem Parameters)
 Prefix: PP
 Author: Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
-==============================================================================*/
+================================================================================*/
 
-/*----------------------------- Problems -------------------------------*/
+/*----------------------------- Problems ---------------------------------------*/
 
-//#define PP_PATH "Problems/"
+#define PP_PATH "Problems/"
 
-/**/
+/**
 #include "_Problems-Miscellaneous.h"
 #define PP_PATH "../../Set-of-LP-Problems/Miscellaneous-LP/"
 
-/**
+/**/
 #include "_Problems-NetLib-LP.h"
-#define PP_PATH "../../Set-of-LP-Problems/NetLib-LP/"
+//#define PP_PATH "../../Set-of-LP-Problems/NetLib-LP/"
 
 /*---------------------------------------------------------------------*/
 
@@ -25,21 +25,20 @@ This source code has been produced with using BSF-skeleton
 
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_DEBUG
-#define PP_RANDOM_OBJ_VECTOR
 //#define PP_MATRIX_OUTPUT
-//#define PP_SAVE_ITER_RESULT
+#define PP_SAVE_ITER_RESULT
 //#define PP_SAVE_RESULT
 //#define PP_SAVE_W
-//#define PP_BIPROJECTION
+
+#define PP_MAX_PSEUDOPROJECTING_ITER	0		// Maximum acceptable number of iterations in Pseudoprojection on flat
 
 //=========================== Problem Parameters =========================
 #define PP_MM					(PP_M+2*PP_N)	// Maximal number of constraints
 #define PP_EPS_JUMP_VECTOR_LEN	1E-3
-#define PP_MAX_ITER_COUNT		10000000000		// Maximal count of iterations
 //------------------------------ ifdef PP_DEBUG --------------------------------
-#define PP_PROJECTION_COUNT			100000			// Each PP_PROJECTION_COUNT-th iteration to be outputted inside Flat_MaxProjection(*)
+#define PP_PROJECTION_COUNT		10000000		// Each PP_PROJECTION_COUNT-th iteration to be outputted inside PC_bsf_ProcessResults(*)
 //-------------------------- Input/Outpoot Parameters ---------------------------
-#define PP_OUTPUT_LIMIT	4 // Number of Elements to output
+#define PP_OUTPUT_LIMIT	5 // Number of Elements to output
 #define PP_SETW 24
 //------------------------- Matrix format ----------------
 #define PP_INFINITY			1E+308		// Highest bound in *_hi.mtx
