@@ -9,7 +9,7 @@ This source code has been produced with using BSF-skeleton
 
 /*----------------------------- Problems ---------------------------------------*/
 
-#define PP_PATH "Problems/"
+//#define PP_PATH "Problems/"
 
 /**
 #include "_Problems-Miscellaneous.h"
@@ -17,16 +17,16 @@ This source code has been produced with using BSF-skeleton
 
 /**/
 #include "_Problems-NetLib-LP.h"
-//#define PP_PATH "../../Set-of-LP-Problems/NetLib-LP/"
+#define PP_PATH "../../Set-of-LP-Problems/NetLib-LP/"
 
-/*---------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------*/
 
 #define PP_METHOD_NAME "VeSP"
 
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
-#define PP_SAVE_ITER_RESULT
+//#define PP_SAVE_ITER_RESULT
 //#define PP_SAVE_RESULT
 //#define PP_SAVE_W
 

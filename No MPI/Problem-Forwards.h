@@ -26,6 +26,8 @@ namespace SF {
 	void	MakeColumnOfNorms(PT_matrix_T A, PT_column_T norm_a);
 	void	MakeListOfNotIncludingHalfspaces(PT_vector_T x, int* notIncludingHalfspacesList, double eps);
 	void	MakeNeHyperplaneList(PT_vector_T u, int* neHyperplanes_u, int* mneh_u, double eps);
+	void	Matrix__Rank(int* list_i, int mi, double eps_zero, int* rank);
+	void	Matrix_CopyConstraintsToD(int* list_i, int count);
 	bool	MPS___Load_Problem();
 	bool	MPS__MakeProblem(PT_MPS_row_T* row, int n_row, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBounds, int n_up, PT_MPS_fxVariable_T* fxVariable, int n_fx);
 	bool	MPS__ReadBounds(FILE* stream, PT_MPS_column_T* column, int n_col, double* loBound, PT_MPS_upBound_T* upBound, int* n_up, PT_MPS_fxVariable_T* fxVariable, int* n_fx);
@@ -63,11 +65,11 @@ namespace SF {
 	void	MTX_SkipComments(FILE* stream);
 	int		Number_IncludingNeHyperplanes(PT_vector_T x, double eps_on_hyperplane);
 	double	ObjF(PT_vector_T x);
-	void	Ort__Projecting(int* flatHyperplanes, int m_flat, PT_vector_T v, PT_vector_T w, bool* success);
+	void	Ort__Projecting(int* flatHyperplanes, int m_flat, PT_vector_T v, PT_vector_T w, double eps_zero, bool* success);
 	void	Ort_D_and_B(int* flatHyperplanes, int m, int n);
 	//bool	Ort_Check_DDT_DDTI(int m);
 	void	Ort_DDT(int m, int n);
-	void	Ort_DDTI(int m, bool* success);
+	void	Ort_DDTI(int m, double eps_zero, bool* success);
 	void	Ort_DT(int m, int n);
 	void	Ort_DTDDTI(int m, int n);
 	void	Ort_Dv_B(PT_vector_T v, int m, int n);

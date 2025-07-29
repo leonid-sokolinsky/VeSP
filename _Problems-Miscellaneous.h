@@ -8,7 +8,7 @@ This include file is part of Problem-Parameters.h
 ================================================================================*/
 #pragma once
 
-/*============================== nguyen5 LP problem ============================*
+/*============================== nguyen5 LP problem ============================*/
 #define PP_PROBLEM_NAME	"nguyen5"
 #define PP_MPS_FORMAT
 #define PP_M 4		// Number of constrains
@@ -23,11 +23,9 @@ This include file is part of Problem-Parameters.h
 #define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Computed objective value: 21.4549732313097933911195
-// Maximal objective value:  21.4549732313109693393471
-// Relative error = 5.48e-14
-// Distance to polytope: 7.52393437408246337626684e-17
-// Number of bounding hyperplanes: 5
+// Number of iterations: 4
+// Computed objective value: 21.4549732313098928671025
+// Distance to polytope: 1.58002621855731722273438e-15
 //------------------------------------------------------------------------------
 
 /*============================== simpleCube LP problem =========================*
@@ -48,16 +46,14 @@ This include file is part of Problem-Parameters.h
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 30000
-// Maximal objective value:  60000
-// Relative error = 0.5
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
-/*============================== cubeInHyperplane LP problem ===================*
+/*============================== cubeAndHyperplane LP problem ===================*
 #define PP_MPS_FORMAT
-#define PP_PROBLEM_NAME	"cubeInHyperplane"
+#define PP_PROBLEM_NAME	"cubeAndHyperplane"
 #define PP_M 4		// Number of rows in *.mtx
 #define PP_N 4		// Number of cols in *.mtx
 #define PP_MAX_OBJ_VALUE 		90000
@@ -70,11 +66,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Computed objective value: 30000
-// Maximal objective value:  60000
-// Relative error = 0.5
-// Distance to polytope: 0
-// Number of bounding hyperplanes: 3
+// Number of iterations: 2
+// Computed objective value: 61999.9999999999854480848
+// Distance to polytope: 5.68434188608080148696899e-14
 //------------------------------------------------------------------------------
 
 /*============================== simple1FxVar LP problem ========================*
@@ -90,14 +84,12 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 1
 // Computed objective value: 52500
-// Maximal objective value:  52500
-// Relative error = 0
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 2
 //------------------------------------------------------------------------------
 
 /*============================== simple1 LP problem =============================*
@@ -114,11 +106,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 40000
-// Maximal objective value:  55000
-// Relative error = 0.273
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple1.1 LP problem ===========================*
@@ -133,14 +123,12 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 40000
-// Maximal objective value:  40000
-// Relative error = 0
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple2 LP problem =============================*
@@ -164,14 +152,12 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 63500
-// Maximal objective value:  63500
-// Relative error = 0
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
-/*============================== simple3 LP problem =============================*
+/*============================== simple3 LP problem ============================*
 //#define PP_MPS_FORMAT
 #define PP_PROBLEM_NAME	"simple3"
 #ifdef PP_MPS_FORMAT
@@ -188,14 +174,12 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MEDIAN_LAUNCH_VECTOR
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Computed objective value: 46666.6666666666715173051
-// Maximal objective value:  55000
-// Relative error = 0.152
+// Number of iterations: 2
+// Computed objective value: 50000
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== simple1min LP problem ==========================*
@@ -204,7 +188,7 @@ This include file is part of Problem-Parameters.h
 #define PP_N 8		// Number of cols in *.mtx
 #define PP_MAX_OBJ_VALUE 		-5000
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO				1E-10					// Accuracy for comparison with zero
+#define PP_EPS_ZERO				1E-11					// Accuracy for comparison with zero
 #define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
@@ -212,11 +196,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Computed objective value: -5000
-// Maximal objective value:  -5000
-// Relative error = 0
-// Distance to polytope: 5.74324855666557789604281e-14
-// Number of bounding hyperplanes: 3
+// Number of iterations: 2
+// Computed objective value: -4999.99999999999454303179
+// Distance to polytope: 3.28185631809461621106249e-14
 //------------------------------------------------------------------------------
 
 /*============================== simple_zcv LP problem =========================*
@@ -233,11 +215,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 1
 // Computed objective value: 50000
-// Maximal objective value:  50000
-// Relative error = 0
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 4
 //------------------------------------------------------------------------------
 
 /*============================== simple_lcv LP problem =========================*
@@ -251,14 +231,12 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 1
 // Computed objective value: 50000.199999999997089617
-// Maximal objective value:  50000.199999999997089617
-// Relative error = 0
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 4
 //------------------------------------------------------------------------------
 
 /*============================== simple_lcv_neg LP problem =====================*
@@ -272,14 +250,12 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Computed objective value: 49997.9999999999927240424
-// Maximal objective value:  49998
-// Relative error = 1.46e-16
+// Number of iterations: 2
+// Computed objective value: 49997.9999999999854480848
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 4
 //------------------------------------------------------------------------------
 
 /*============================== angle03 LP problem ============================*
@@ -296,11 +272,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 3000
-// Maximal objective value:  3000
-// Relative error = 0
-// Distance to polytope: 0
-// Number of bounding hyperplanes: 3
+// Distance to polytope: 1.74186118984728486157843e-15
 //------------------------------------------------------------------------------
 
 /*============================== angle04 LP problem ============================*
@@ -314,7 +288,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Computed objective value: 3097.98387096774149540579
@@ -338,11 +312,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 1
 // Computed objective value: 102.500000000000028421709
-// Maximal objective value:  132.5
-// Relative error = 0.226
-// Distance to polytope: 2.48316074980613530909199e-14
-// Number of bounding hyperplanes: 3
+// Distance to polytope: 1.24158037490306765454599e-14
 //------------------------------------------------------------------------------
 
 /*============================== rnd3_3_Olkhovsky289 LP problem ================*
@@ -356,14 +328,12 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Computed objective value: 609.846183895700733046397
-// Maximal objective value:  671.95249485979684322956
-// Relative error = 0.0924
+// Number of iterations: 2
+// Computed objective value: 609.846183895700846733234
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== rnd3_3_Olkhovsky56 LP problem =================*
@@ -377,14 +347,12 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 784.487795499235289753415
-// Maximal objective value:  990.797118755359633723856
-// Relative error = 0.208
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== rnd3_3_Olkhovsky331 LP problem ================*
@@ -401,11 +369,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 531.952649837816807121271
-// Maximal objective value:  714.535477965318364113045
-// Relative error = 0.256
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
 /*============================== rnd3_3_Olkhovsky336 LP problem ================*
@@ -422,11 +388,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 742.920868966213220119243
-// Maximal objective value:  998.193448648739490636217
-// Relative error = 0.256
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //-----------------------------------------------------------------------------
 
 /*============================== rnd3-10 LP problem ============================*
@@ -443,14 +407,12 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
+// Number of iterations: 2
 // Computed objective value: 529.415883661248926728149
-// Maximal objective value:  852.028917900967712739657
-// Relative error = 0.379
 // Distance to polytope: 0
-// Number of bounding hyperplanes: 3
 //------------------------------------------------------------------------------
 
-/*============================== rnd5-100 LP problem ===========================*/
+/*============================== rnd5-100 LP problem ===========================*
 #define PP_PROBLEM_NAME	"rnd5-100"
 #define PP_M 105		// Number of rows in *.mtx
 #define PP_N 110		// Number of cols in *.mtx
@@ -464,11 +426,9 @@ This include file is part of Problem-Parameters.h
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Computed objective value: 1129.9627910016886289668
-// Maximal objective value:  1848.43708058786501169379
-// Relative error = 0.389
-// Distance to polytope: 2.79644788773952504914563e-14
-// Number of bounding hyperplanes: 5
+// Number of iterations: 2
+// Computed objective value: 1129.96279100168885634048
+// Distance to polytope: 1.11857915509581001965825e-13
 //------------------------------------------------------------------------------
 
 /*==============================================================================*/

@@ -12,7 +12,6 @@ This source code is a part of BSF Skeleton
 struct PT_bsf_parameter_T {
 	PT_vector_T v;			// Point to project
 	PT_vector_T u;
-	bool reduceFlatDim;
 };
 
 struct PT_bsf_mapElem_T {	// Type of map-list elements
