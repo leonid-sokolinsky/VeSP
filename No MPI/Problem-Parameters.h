@@ -34,7 +34,7 @@ This source code has been produced with using BSF-skeleton
 
 //=========================== Problem Parameters =========================
 #define PP_MM					(PP_M+2*PP_N)	// Maximal number of constraints
-#define PP_EPS_JUMP_VECTOR_LEN	1E-3
+#define PP_EPS_JUMP_VECTOR_LEN	1E-4
 //------------------------------ ifdef PP_DEBUG --------------------------------
 #define PP_PROJECTION_COUNT		100000		// Each PP_PROJECTION_COUNT-th iteration to be outputted inside PC_bsf_ProcessResults(*)
 //-------------------------- Input/Outpoot Parameters ---------------------------

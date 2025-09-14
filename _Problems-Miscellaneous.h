@@ -20,7 +20,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
+//#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 4
@@ -149,6 +149,28 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
+//#define PP_MAXPROJECTION
+//------------------------------------------------------------------------------
+// Elapsed time: 0
+// Number of iterations: 2
+// Computed objective value: 63500
+// Distance to polytope: 0
+//------------------------------------------------------------------------------
+
+/*============================== simple2' LP problem =============================*
+// Simple LP problem & x_3=200; 2*x_3=400; x_2>=110; x_0<=190
+#define PP_MPS_FORMAT
+#define PP_PROBLEM_NAME	"simple2'"
+#define PP_M 6		// Number of constraints
+#define PP_N 4		// Number of variables
+#define PP_MAX_OBJ_VALUE 	63500
+//------------------------------------------------------------------------------
+#define PP_EPS_ZERO				1E-14					// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION		(PP_EPS_ZERO*10)		// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE	(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7				// Length of Objective Vector
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_BASIC_VECTORS_ONLY
 //#define PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0

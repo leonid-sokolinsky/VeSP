@@ -10,7 +10,7 @@ This include file is part of Problem-Parameters.h
 
 #define PP_MPS_FORMAT
 
-/*============================== adlittle LP problem ===========================*
+/*============================== adlittle LP problem ===========================*/
 // Number of equations: 15
 // Subspace dimension: 82
 #define PP_PROBLEM_NAME		"adlittle"
@@ -19,20 +19,19 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 		-225494.96316238038228101176621492
 //------------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-10	// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-9	// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE		1E-6	// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE		1E-7	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6	// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
+//#define PP_NORMALIZATION
 #define PP_BASIC_VECTORS_ONLY
-#define PP_RANDOM_LAUNCH_VECTOR 0
 //------------------------------------------------------------------------------
-// Elapsed time: 1
+// Elapsed time: 0
 // Number of iterations: 44
-// Computed objective value: -716430.781853274209424853
-// Distance to polytope: 2.25586793420209640948635e-07
+// Computed objective value: -674863.719450850505381823
+// Distance to polytope: 3.76723049838533742809366e-09
 //------------------------------------------------------------------------------
 
-/*============================== afiro LP problem ==============================*/
+/*============================== afiro LP problem ==============================*
 // Number of equations: 8
 // Subspace dimension: 24
 #define PP_PROBLEM_NAME	"afiro"
@@ -40,18 +39,18 @@ This include file is part of Problem-Parameters.h
 #define PP_N 32		// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 464.75314285714285714285714285714
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-12	// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-10	// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE		1E-9	// Accuracy of belonging to hyperplane
+#define PP_EPS_ZERO					1E-10	// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE		1E-10	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6	// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
+//#define PP_NORMALIZATION
 #define PP_BASIC_VECTORS_ONLY
 #define PP_RANDOM_LAUNCH_VECTOR 113
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 6
-// Computed objective value: 30.9501120000258822528849
-// Distance to polytope: 9.89738502457257054669431e-11
+// Number of iterations: 1
+// Computed objective value: 464.753142857177749647235
+// Distance to polytope: 9.5499736822629241134646e-12
 //------------------------------------------------------------------------------
 
 /*============================== beaconfd LP problem ===========================*
@@ -63,17 +62,17 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE -33592.4858072
 //------------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11					// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			(PP_EPS_ZERO*10)		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE		1E-5					// Accuracy of belonging to hyperplane
+#define PP_EPS_ON_HYPERPLANE		1E-7					// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
+//#define PP_NORMALIZATION
 #define PP_BASIC_VECTORS_ONLY
-#define PP_RANDOM_LAUNCH_VECTOR 0
+#define PP_RANDOM_LAUNCH_VECTOR 13
 //------------------------------------------------------------------------------
 // Elapsed time: 19
 // Number of iterations: 35
-// Computed objective value: -33728.4323331992200110108
-// Distance to polytope: 1.45601590258345734099262e-11
+// Computed objective value: -33689.8083231959753902629
+// Distance to polytope: 2.92854362982097882195376e-09
 //------------------------------------------------------------------------------
 
 /*============================== blend LP problem ==============================*
@@ -84,21 +83,17 @@ This include file is part of Problem-Parameters.h
 #define PP_N 83		// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 30.812149845828220173774356124984	// Exact maximum value of objective function
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-10	// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-8	// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE		1E-7	// Accuracy of belonging to hyperplane
+#define PP_EPS_ZERO					1E-9	// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE		1E-9	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6	// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
-#ifndef PP_MAXPROJECTION
+#define PP_NORMALIZATION
 #define PP_BASIC_VECTORS_ONLY
-#endif // !PP_MAXPROJECTION
-#define PP_MEDIAN_LAUNCH_VECTOR
 //------------------------------------------------------------------------------
-// Elapsed time: 775.226907969
-// Number of iterations: 18
-// Computed objective value: 15.8981296224031627417617
-// Distance to polytope: 1.13465951087516247373718e-12
+// Elapsed time: 0
+// Number of iterations: 17
+// Computed objective value: 18.5617938676800626751628
+// Distance to polytope: 2.88359300772346922592645e-10
 //------------------------------------------------------------------------------
 
 /*============================== fit1d LP problem ==============================*
@@ -109,18 +104,16 @@ This include file is part of Problem-Parameters.h
 #define PP_N 1026	// Number of variables
 #define PP_MAX_OBJ_VALUE 9146.3780924209269467749025024617	// Exact maximum value of objective function
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-15	// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-14	// Precision to calculate projection
+#define PP_EPS_ZERO					1E-12	// Accuracy for comparison with zero
 #define PP_EPS_ON_HYPERPLANE		1E-6	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6	// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-//#define PP_MEDIAN_LAUNCH_VECTOR
-//#define PP_RANDOM_LAUNCH_VECTOR 113
+//#define PP_NORMALIZATION
 //------------------------------------------------------------------------------
-// Elapsed time: 780
-// Number of iterations: 530
-// Computed objective value: 8995.43434399400211987086
-// Distance to polytope: 4.05048421303497920494154e-07
+// Elapsed time: 35
+// Number of iterations: 19
+// Computed objective value: 8995.43478788196443929337
+// Distance to polytope: 4.05088880740421671437448e-07
 //------------------------------------------------------------------------------
 
 /*============================== grow7 LP problem ==============================*
@@ -131,15 +124,16 @@ This include file is part of Problem-Parameters.h
 #define PP_N 301	// Number of variables in mps-file (after conversion to standard form)
 #define PP_MAX_OBJ_VALUE 47787811.814711502616766956242865	// Exact maximum value of objective function
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-15	// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-10	// Precision to calculate projection
+#define PP_EPS_ZERO					1E-14	// Accuracy for comparison with zero
 #define PP_EPS_ON_HYPERPLANE		1E-5	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+7	// Length of Objective Vector
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_NORMALIZATION
 //------------------------------------------------------------------------------
-// Elapsed time: 16
+// Elapsed time: 3
 // Number of iterations: 119
-// Computed objective value: 43969431.1074070557951927
-// Distance to polytope: 9.66803570715207168909285e-06
+// Computed objective value: 43969431.1074046716094017
+// Distance to polytope: 7.26566976980275396177846e-06
 //------------------------------------------------------------------------------
 
 /*============================== israel LP problem =============================*
@@ -149,18 +143,18 @@ This include file is part of Problem-Parameters.h
 #define PP_N 142	// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 896644.82186304572966200464196045	// Exact maximum value of objective function
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11		// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-10		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE		1E-6		// Accuracy of belonging to hyperplane
+#define PP_EPS_ZERO					1E-12		// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE		1E-4		// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6	// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_RANDOM_LAUNCH_VECTOR 3
+#define PP_NORMALIZATION
+#define PP_BASIC_VECTORS_ONLY
+#define PP_RANDOM_LAUNCH_VECTOR 11
 //------------------------------------------------------------------------------
-// F(x) = -3079072.39031
 // Elapsed time: 1
-// Number of iterations: 45
-// Computed objective value: 102956.85689921339508146
-// Distance to polytope: 5.88566228705398090758185e-07
+// Number of iterations: 10
+// Computed objective value: 38293.4441830649084295146
+// Distance to polytope: 6.24554478446624970587467e-06
 //------------------------------------------------------------------------------
 
 /*============================== kb2 LP problem ================================*
@@ -171,17 +165,17 @@ This include file is part of Problem-Parameters.h
 #define PP_N 41	// Number of variables in mps-file (after conversion to standard form)
 #define PP_MAX_OBJ_VALUE 1749.9001299062057129526866493726
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-10					// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-7		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE		1E-6	// Accuracy of belonging to hyperplane
+#define PP_EPS_ZERO					1E-14					// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE		1E-8	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
+#define PP_NORMALIZATION
 #define PP_BASIC_VECTORS_ONLY
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 2
-// Computed objective value: 174.526507241575814077805
-// Distance to polytope: 2.1836865792463599311058e-10
+// Number of iterations: 6
+// Computed objective value: 1622.48655771090466259921
+// Distance to polytope: 6.52161511601681416607355e-09
 //------------------------------------------------------------------------------
 
 /*============================== recipe LP problem =============================*
@@ -192,22 +186,17 @@ This include file is part of Problem-Parameters.h
 #define PP_N 180	// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 266.616 // Exact maximum value of objective function
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11					// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			(PP_EPS_ZERO*10)		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE		(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
+#define PP_EPS_ZERO					1E-11				// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE		1E-9	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-//#define PP_MAXPROJECTION
-#ifndef PP_MAXPROJECTION
 #define PP_BASIC_VECTORS_ONLY
-#endif // !PP_MAXPROJECTION
 //------------------------------------------------------------------------------
-// Elapsed time: 2
-// Number of iterations: 9
-// Computed objective value: 262.820000000075992829807
-// Distance to polytope: 1.52899914951376558747143e-12
+// Elapsed time: 0
+// Number of iterations: 1
+// Computed objective value: 262.820000069030243139423
+// Distance to polytope: 9.76471221924679192201208e-10
 //------------------------------------------------------------------------------
-
 
 /*============================== sc105 LP problem ==============================*
 // Number of equations: 45
@@ -218,19 +207,16 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 52.202061211707248062628010857689 // Exact maximum value of objective function
 //------------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11					// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			(PP_EPS_ZERO*10)		// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE		1E-8	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-//#define PP_MAXPROJECTION
-#ifndef PP_MAXPROJECTION
+#define PP_NORMALIZATION
 #define PP_BASIC_VECTORS_ONLY
-#endif // !PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 6
-// Computed objective value: 9.81873854325621309158123
-// Distance to polytope: 3.58507922695696403166089e-11
+// Number of iterations: 1
+// Computed objective value: 9.81873854325506378870614
+// Distance to polytope: 2.65317132137960975907187e-11
 //------------------------------------------------------------------------------
 
 /*============================== sc50a LP problem ==============================*
@@ -246,10 +232,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_PROJECTION*100)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-//#define PP_MAXPROJECTION
-#ifndef PP_MAXPROJECTION
 #define PP_BASIC_VECTORS_ONLY
-#endif // !PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 7
@@ -270,10 +253,7 @@ This include file is part of Problem-Parameters.h
 #define PP_EPS_ON_HYPERPLANE		(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-//#define PP_MAXPROJECTION
-#ifndef PP_MAXPROJECTION
 #define PP_BASIC_VECTORS_ONLY
-#endif // !PP_MAXPROJECTION
 //------------------------------------------------------------------------------
 // Elapsed time: 0
 // Number of iterations: 13
@@ -290,12 +270,9 @@ This include file is part of Problem-Parameters.h
 #define PP_MAX_OBJ_VALUE 2331389.824330984	// Exact maximum value of objective function
 //------------------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-11	// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-10	// Precision to calculate projection
 #define PP_EPS_ON_HYPERPLANE		1E-7	// Accuracy of belonging to hyperplane
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-//#define PP_MAXPROJECTION
-//#define PP_RANDOM_LAUNCH_VECTOR 113
 #define PP_MEDIAN_LAUNCH_VECTOR
 //------------------------------------------------------------------------------
 // Elapsed time: 1
@@ -312,17 +289,15 @@ This include file is part of Problem-Parameters.h
 #define PP_N 760		// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE -8.6666666743333647292533502995263	// Exact maximum value of objective function
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11					// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-9		// Precision to calculate projection
+#define PP_EPS_ZERO					1E-11	// Accuracy for comparison with zero
 #define PP_EPS_ON_HYPERPLANE		1E-8	// Accuracy of belonging to hyperplane
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+7	// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-#define PP_MAXPROJECTION
-//#define PP_BASIC_VECTORS_ONLY
-//#define PP_RANDOM_LAUNCH_VECTOR 113
-#define PP_MEDIAN_LAUNCH_VECTOR
+#define PP_NORMALIZATION
+#define PP_BASIC_VECTORS_ONLY
 //------------------------------------------------------------------------------
-
+// PC_bsf_MapF : Not possible to create inverse matrix for direct orthogonal projection.
+// The direct orthogonal projection method is not applicable for this problem!
 //------------------------------------------------------------------------------
 
 /*============================== share2b LP problem ============================*
@@ -333,20 +308,17 @@ This include file is part of Problem-Parameters.h
 #define PP_N 79	// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 415.732240741419486545199108738 // Exact maximum value of objective function
 //------------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-10					// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION			1E-9		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE		1E-6	// Accuracy of belonging to hyperplane
-#define PP_OBJECTIVE_VECTOR_LENGTH	1E+6					// Length of Objective Vector
+#define PP_EPS_ZERO					1E-12	// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE		1E-8	// Accuracy of belonging to hyperplane
+#define PP_OBJECTIVE_VECTOR_LENGTH	1E+6	// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
-//#define PP_MAXPROJECTION
-#ifndef PP_MAXPROJECTION
-#define PP_BASIC_VECTORS_ONLY
-#endif // !PP_MAXPROJECTION
+#define PP_NORMALIZATION
+#define PP_RANDOM_LAUNCH_VECTOR 11
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 10
-// Computed objective value: 389.506304102954800328007
-// Distance to polytope: 1.27386515984388698717849e-07
+// Number of iterations: 1
+// Computed objective value: 389.662453305113842816354
+// Distance to polytope: 5.02824874715414227770686e-10
 //------------------------------------------------------------------------------
 
 /*============================== stocfor1 LP problem ============================*
@@ -357,19 +329,19 @@ This include file is part of Problem-Parameters.h
 #define PP_N 111	// Number of variables in mps-file
 #define PP_MAX_OBJ_VALUE 41131.976219436406065682760731514 // Exact maximum value of objective function
 //--------------------------------------------------------------------------
-#define PP_EPS_ZERO				1E-15					// Accuracy for comparison with zero
-#define PP_EPS_PROJECTION		1E-10		// Precision to calculate projection
-#define PP_EPS_ON_HYPERPLANE	1E-7	// Precision for point to be in halfspace
+#define PP_EPS_ZERO				1E-15	// Accuracy for comparison with zero
+#define PP_EPS_ON_HYPERPLANE	1E-5	// Precision for point to be in halfspace
 #define PP_OBJECTIVE_VECTOR_LENGTH	1E+6				// Length of Objective Vector
 //-------------------------- Compilation Modes ---------------------------------
+#define PP_NORMALIZATION
 //#define PP_MAXPROJECTION
 //#define PP_RANDOM_LAUNCH_VECTOR 113
 //#define PP_MEDIAN_LAUNCH_VECTOR
 //------------------------------------------------------------------------------
 // Elapsed time: 0
-// Number of iterations: 8
-// Computed objective value: 25463.6407764100040367339
-// Distance to polytope: 1.05547273497526090659406e-12
+// Number of iterations: 1
+// Computed objective value: 25428.8841209150959912222
+// Distance to polytope: 9.33470986082504875974383e-13
 //------------------------------------------------------------------------------
-//
+
 //==============================================================================*/
